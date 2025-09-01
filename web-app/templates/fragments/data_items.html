@@ -1,0 +1,9 @@
+<div id="data-content">
+    <p class="message">{{ message }}</p>
+    <p class="timestamp">Last updated: {{ timestamp }}</p>
+    <ul id="items-list">
+        {% for item in items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+</div>

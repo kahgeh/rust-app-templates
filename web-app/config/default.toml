@@ -1,0 +1,15 @@
+# Default configuration file
+
+[server]
+host = "0.0.0.0"
+port = 8901
+
+[telemetry]
+level = "info"
+enabled = false
+otlp_endpoint = "http://localhost:4317"
+service_name = "rust-app-templates"
+
+[application]
+name = "Rust Web Starter"
+environment = "development"

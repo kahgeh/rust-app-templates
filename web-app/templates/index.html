@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-grid">
+    <!-- Header -->
+    <div class="card">
+        <h2>Welcome to Rust Web Starter</h2>
+        <p>Environment: <span class="environment-badge">{{ environment }}</span></p>
+    </div>
+
+    <!-- Hypermedia Demo Card -->
+    <div class="card">
+        <h3>Hypermedia Demo</h3>
+        <div class="demo-section">
+            <button data-on-click="@get('/get-items')">
+                Fetch Data
+            </button>
+            <!-- Placeholder for dynamic content -->
+            <div id="data-content">
+                <p class="message">Click the button to load data</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Demo Card -->
+    <div class="card">
+        <h3>Form Demo</h3>
+        <form data-on-submit="@post('/submit-form', {contentType: 'form'})">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="value">Value:</label>
+                <input type="text" id="value" name="value" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <!-- Placeholder for form response -->
+        <div id="form-response">
+            <!-- Response will be displayed here -->
+        </div>
+    </div>
+
+    <!-- Features Card -->
+    {% include "components/card.html" %}
+</div>
+{% endblock %}

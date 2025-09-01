@@ -1,0 +1,245 @@
+/* Using Open Props for modern CSS design tokens */
+
+/* Base styles */
+:root {
+    color-scheme: light dark;
+}
+
+body {
+    font-family: var(--font-sans);
+    line-height: var(--font-lineheight-3);
+    color: var(--text-1);
+    background: var(--gradient-7);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: var(--size-content-3);
+    margin-inline: auto;
+    padding: var(--size-fluid-3);
+}
+
+/* Grid layout */
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--size-fluid-3);
+    margin-top: var(--size-fluid-3);
+}
+
+/* Card styles with Open Props */
+.card {
+    background: var(--surface-1);
+    border-radius: var(--radius-3);
+    padding: var(--size-fluid-3);
+    box-shadow: var(--shadow-2);
+    border: var(--border-size-1) solid var(--surface-2);
+    transition: transform var(--animation-fade-in), box-shadow var(--animation-fade-in);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-4);
+}
+
+.card h2 {
+    color: var(--text-1);
+    margin-bottom: var(--size-3);
+    font-size: var(--font-size-5);
+    font-weight: var(--font-weight-7);
+}
+
+.card h3 {
+    color: var(--text-2);
+    margin-bottom: var(--size-3);
+    font-size: var(--font-size-3);
+    font-weight: var(--font-weight-6);
+}
+
+/* Environment badge */
+.environment-badge {
+    display: inline-block;
+    padding-inline: var(--size-3);
+    padding-block: var(--size-1);
+    background: var(--blue-7);
+    color: var(--gray-0);
+    border-radius: var(--radius-round);
+    font-size: var(--font-size-0);
+    font-weight: var(--font-weight-6);
+}
+
+/* Demo section */
+.demo-section {
+    margin-top: var(--size-3);
+}
+
+/* Button styles with Open Props */
+button {
+    background: var(--blue-7);
+    color: var(--gray-0);
+    border: none;
+    padding-inline: var(--size-4);
+    padding-block: var(--size-2);
+    border-radius: var(--radius-2);
+    cursor: pointer;
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-6);
+    transition: background var(--animation-fade-in);
+    margin-bottom: var(--size-3);
+}
+
+button:hover {
+    background: var(--blue-8);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Form styles with Open Props */
+form {
+    margin-top: var(--size-3);
+}
+
+.form-group {
+    margin-bottom: var(--size-4);
+}
+
+label {
+    display: block;
+    margin-bottom: var(--size-2);
+    color: var(--text-2);
+    font-weight: var(--font-weight-6);
+    font-size: var(--font-size-0);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: var(--size-2);
+    border: var(--border-size-2) solid var(--surface-3);
+    border-radius: var(--radius-2);
+    font-size: var(--font-size-1);
+    background: var(--surface-1);
+    color: var(--text-1);
+    transition: border-color var(--animation-fade-in);
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--blue-7);
+    box-shadow: 0 0 0 3px var(--blue-3);
+}
+
+/* Response message with Open Props */
+.response-message {
+    margin-top: var(--size-3);
+    padding: var(--size-3);
+    background: var(--green-2);
+    color: var(--green-9);
+    border: var(--border-size-1) solid var(--green-4);
+    border-radius: var(--radius-2);
+}
+
+.response-message.success {
+    background: var(--green-2);
+    color: var(--green-9);
+    border-color: var(--green-4);
+}
+
+/* Data content styling */
+#data-content {
+    margin-top: var(--size-3);
+    padding: var(--size-3);
+    background: var(--surface-2);
+    border-radius: var(--radius-2);
+    border: var(--border-size-1) solid var(--surface-3);
+}
+
+#data-content .message {
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-6);
+    color: var(--text-1);
+    margin-bottom: var(--size-2);
+}
+
+#data-content .timestamp {
+    font-size: var(--font-size-0);
+    color: var(--text-2);
+    margin-bottom: var(--size-3);
+}
+
+/* List styles with Open Props */
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#items-list li {
+    padding: var(--size-2);
+    background: var(--surface-2);
+    margin-bottom: var(--size-2);
+    border-radius: var(--radius-1);
+    border-inline-start: var(--border-size-3) solid var(--blue-7);
+}
+
+.features-list li {
+    padding-block: var(--size-3);
+    border-bottom: var(--border-size-1) solid var(--surface-3);
+}
+
+.features-list li:last-child {
+    border-bottom: none;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .card {
+        background: var(--surface-2);
+        border-color: var(--surface-3);
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+        background: var(--surface-2);
+        border-color: var(--surface-4);
+    }
+    
+    .response-message {
+        background: var(--green-12);
+        color: var(--green-2);
+        border-color: var(--green-8);
+    }
+    
+    .response-message.success {
+        background: var(--green-12);
+        color: var(--green-2);
+        border-color: var(--green-8);
+    }
+    
+    #data-content {
+        background: var(--surface-3);
+        border-color: var(--surface-4);
+    }
+}
+
+/* Responsive design with Open Props */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--size-3);
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr;
+        gap: var(--size-3);
+    }
+    
+    .card {
+        padding: var(--size-4);
+    }
+}

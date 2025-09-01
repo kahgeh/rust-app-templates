@@ -1,0 +1,22 @@
+[workspace]
+members = ["web-app"]
+resolver = "2"
+
+[workspace.dependencies]
+# Common dependencies that might be shared across multiple crates
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1.0"
+thiserror = "2.0"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Observability - can be used by any crate
+opentelemetry = "0.30"
+opentelemetry_sdk = { version = "0.30", features = ["rt-tokio"] }
+opentelemetry-otlp = { version = "0.30", features = ["tonic"] }
+opentelemetry-semantic-conventions = "0.30"
+tracing-opentelemetry = "0.31"
