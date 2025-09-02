@@ -1,0 +1,8 @@
+crawler.py
+pyproject.toml
+datastar_docs_crawler.egg-info/PKG-INFO
+datastar_docs_crawler.egg-info/SOURCES.txt
+datastar_docs_crawler.egg-info/dependency_links.txt
+datastar_docs_crawler.egg-info/entry_points.txt
+datastar_docs_crawler.egg-info/requires.txt
+datastar_docs_crawler.egg-info/top_level.txt

@@ -1,0 +1,12 @@
+[submodule "ref/datastar"]
+	path = ref/datastar
+	url = https://github.com/starfederation/datastar
+[submodule "ref/datastar-rust"]
+	path = ref/datastar-rust
+	url = https://github.com/starfederation/datastar-rust
+[submodule "ref/typedb"]
+	path = ref/typedb
+	url = https://github.com/typedb/typedb
+[submodule "ref/typedb-docs"]
+	path = ref/typedb-docs
+	url = https://github.com/typedb/typedb-docs

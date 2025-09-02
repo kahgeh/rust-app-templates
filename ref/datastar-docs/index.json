@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "guide": [
+      "reactive_signals.md",
+      "datastar_expressions.md",
+      "getting_started.md",
+      "index.md",
+      "backend_requests.md"
+    ],
+    "examples": [
+      "bulk_update.md",
+      "bad_apple.md",
+      "progressive_load.md",
+      "edit_row.md",
+      "click_to_edit.md",
+      "lazy_load.md",
+      "form_data.md",
+      "title_update.md",
+      "file_upload.md",
+      "inline_validation.md",
+      "progress_bar.md",
+      "custom_event.md",
+      "svg_morphing.md",
+      "click_to_load.md",
+      "index.md",
+      "web_component.md",
+      "animations.md",
+      "lazy_tabs.md",
+      "on_signal_patch.md",
+      "infinite_scroll.md",
+      "dbmon.md",
+      "delete_row.md",
+      "templ_counter.md",
+      "sortable.md",
+      "active_search.md",
+      "todomvc.md"
+    ],
+    "how_tos": [
+      "poll_the_backend_at_regular_intervals.md",
+      "load_more_list_items.md",
+      "index.md",
+      "bind_keydown_events_to_specific_keys.md",
+      "redirect_the_page_from_the_backend.md"
+    ],
+    "reference": [
+      "sse_events.md",
+      "datastar_pro.md",
+      "sdks.md",
+      "attributes.md",
+      "index.md",
+      "actions.md",
+      "security.md"
+    ]
+  },
+  "total_files": 43,
+  "failed_urls": []
+}

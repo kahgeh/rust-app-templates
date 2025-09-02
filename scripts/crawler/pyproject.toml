@@ -1,0 +1,14 @@
+[project]
+name = "datastar-docs-crawler"
+version = "0.1.0"
+description = "Crawler for Datastar documentation"
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "rich>=13.7.0",
+    "markdownify>=0.11.6",
+]
+
+[project.scripts]
+crawl = "crawler:main"
