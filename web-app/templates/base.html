@@ -7,11 +7,28 @@
     <link rel="stylesheet" href="https://unpkg.com/open-props">
     <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css">
     <link rel="stylesheet" href="/static/styles.css">
-    <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js" defer></script>
 </head>
 <body>
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+
+   <script type="module">
+        import { load, apply } from 'https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js';
+        import 'https://kahgeh.github.io/datastar-inspector/datastar-inspector.min.js';       
+        // Make Datastar available globally for the inspector
+        window.Datastar = { load, apply };
+        apply();
+        {% if environment == "development" %}
+                DatastarInspector.init({
+                position: 'right',      
+                width: '400px',         
+                theme: 'dark',          
+                startMinimized: true,   
+                hotkey: 'Ctrl+d'   
+            });
+
+        {% endif %}
+    </script>
 </body>
 </html>
