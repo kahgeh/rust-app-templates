@@ -32,3 +32,4 @@ temp/
 *.backup
 *~
 web-app/config/local.toml
+web-app/node_modules
