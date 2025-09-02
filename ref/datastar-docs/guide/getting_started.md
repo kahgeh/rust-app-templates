@@ -26,8 +26,8 @@ The quickest way to use Datastar is to include it using a `script` tag that fetc
 If you prefer to host the file yourself, download the [script](https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js) or create your own bundle using the [bundler](/bundler), then include it from the appropriate path.
 
 ```html
-1<script type="module" src="/path/to/datastar.js"></script>
 ```
+1<script type="module" src="/path/to/datastar.js"></script>
 
 ## `data-*` [#](#data-*)
 
@@ -164,135 +164,6 @@ Demo code:
 
 Here's the code to generate the SSE events above using the SDKs.
 
-```html
- 1;; Import the SDK's api and your adapter
- 2(require
- 3 '[starfederation.datastar.clojure.api :as d*]
- 4 '[starfederation.datastar.clojure.adapter.http-kit :refer [->sse-response on-open]])
- 5
- 6;; in a ring handler
- 7(defn handler [request]
- 8  ;; Create an SSE response
- 9  (->sse-response request
-10                  {on-open
-11                   (fn [sse]
-12                     ;; Patches elements into the DOM
-13                     (d*/patch-elements! sse
-14                                         "<div id=\"hal\">I'm sorry, Dave. I'm afraid I can't do that.</div>")
-15                     (Thread/sleep 1000)
-16                     (d*/patch-elements! sse
-17                                         "<div id=\"hal\">Waiting for an order...</div>"))}))
-```
-
-```html
- 1using StarFederation.Datastar.DependencyInjection;
- 2
- 3// Adds Datastar as a service
- 4builder.Services.AddDatastar();
- 5
- 6app.MapGet("/", async (IDatastarService datastarService) =>
- 7{
- 8    // Patches elements into the DOM.
- 9    await datastarService.PatchElementsAsync(@"<div id=""hal"">I'm sorry, Dave. I'm afraid I can't do that.</div>");
-10
-11    await Task.Delay(TimeSpan.FromSeconds(1));
-12
-13    await datastarService.PatchElementsAsync(@"<div id=""hal"">Waiting for an order...</div>");
-14});
-```
-
-```html
- 1import (
- 2    "github.com/starfederation/datastar-go/datastar"
- 3    time
- 4)
- 5
- 6// Creates a new `ServerSentEventGenerator` instance.
- 7sse := datastar.NewSSE(w,r)
- 8
- 9// Patches elements into the DOM.
-10sse.PatchElements(
-11    `<div id="hal">I'm sorry, Dave. I'm afraid I can't do that.</div>`
-12)
-13
-14time.Sleep(1 * time.Second)
-15
-16sse.PatchElements(
-17    `<div id="hal">Waiting for an order...</div>`
-18)
-```
-
-```html
- 1import starfederation.datastar.utils.ServerSentEventGenerator;
- 2
- 3// Creates a new `ServerSentEventGenerator` instance.
- 4AbstractResponseAdapter responseAdapter = new HttpServletResponseAdapter(response);
- 5ServerSentEventGenerator generator = new ServerSentEventGenerator(responseAdapter);
- 6
- 7// Patches elements into the DOM.
- 8generator.send(PatchElements.builder()
- 9    .data("<div id=\"hal\">I'm sorry, Dave. I'm afraid I can't do that.</div>")
-10    .build()
-11);
-12
-13Thread.sleep(1000);
-14
-15generator.send(PatchElements.builder()
-16    .data("<div id=\"hal\">Waiting for an order...</div>")
-17    .build()
-18);
-```
-
-```html
- 1use starfederation\datastar\ServerSentEventGenerator;
- 2
- 3// Creates a new `ServerSentEventGenerator` instance.
- 4$sse = new ServerSentEventGenerator();
- 5
- 6// Patches elements into the DOM.
- 7$sse->patchElements(
- 8    '<div id="hal">I'm sorry, Dave. I'm afraid I can't do that.</div>'
- 9);
-10
-11sleep(1)
-12
-13$sse->patchElements(
-14    '<div id="hal">Waiting for an order...</div>'
-15);
-```
-
-```html
-1from datastar_py import ServerSentEventGenerator as SSE
-2from datastar_py.sanic import datastar_response
-3
-4@app.get('/open-the-bay-doors')
-5@datastar_response
-6async def open_doors(request):
-7    yield SSE.patch_elements('<div id="hal">I'm sorry, Dave. I'm afraid I can't do that.</div>')
-8    await asyncio.sleep(1)
-9    yield SSE.patch_elements('<div id="hal">Waiting for an order...</div>')
-```
-
-```html
- 1require 'datastar'
- 2
- 3# Create a Datastar::Dispatcher instance
- 4
- 5datastar = Datastar.new(request:, response:)
- 6
- 7# In a Rack handler, you can instantiate from the Rack env
- 8# datastar = Datastar.from_rack_env(env)
- 9
-10# Start a streaming response
-11datastar.stream do |sse|
-12  # Patches elements into the DOM.
-13  sse.patch_elements %(<div id="hal">I'm sorry, Dave. I'm afraid I can't do that.</div>)
-14
-15  sleep 1
-16  
-17  sse.patch_elements %(<div id="hal">Waiting for an order...</div>)
-18end
-```
 
 ```html
  1use async_stream::stream;
@@ -308,18 +179,6 @@ Here's the code to generate the SSE events above using the SDKs.
 11    
 12    yield PatchElements::new("<div id='hal'>Waiting for an order...</div>").into();
 13})
-```
-
-```html
-1// Creates a new `ServerSentEventGenerator` instance (this also sends required headers)
-2ServerSentEventGenerator.stream(req, res, (stream) => {
-3    // Patches elements into the DOM.
-4    stream.patchElements(`<div id="hal">I'm sorry, Dave. I'm afraid I can't do that.</div>`);
-5
-6    setTimeout(() => {
-7        stream.patchElements(`<div id="hal">Waiting for an order...</div>`);
-8    }, 1000);
-9});
 ```
 
 > In addition to your browser's dev tools, the [Datastar Inspector](/reference/datastar_pro#datastar-inspector) can be used to monitor and inspect SSE events received by Datastar.
