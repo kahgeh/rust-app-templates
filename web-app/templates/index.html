@@ -1,48 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="content-grid">
+<div class="index-page-container">
     <!-- Header -->
-    <div class="card">
-        <h2>Welcome to Rust Web Starter</h2>
+    <div class="header-section">
+        <h1>Welcome to Rust Web Starter</h1>
         <p>Environment: <span class="environment-badge">{{ environment }}</span></p>
     </div>
 
-    <!-- Hypermedia Demo Card -->
-    <div class="card">
-        <h3>Hypermedia Demo</h3>
-        <div class="demo-section">
-            <button data-on-click="@get('/get-items')">
-                Fetch Data
-            </button>
-            <!-- Placeholder for dynamic content -->
-            <div id="data-content">
-                <p class="message">Click the button to load data</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Form Demo Card -->
-    <div class="card">
-        <h3>Form Demo</h3>
-        <form data-on-submit="@post('/submit-form', {contentType: 'form'})">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="value">Value:</label>
-                <input type="text" id="value" name="value" required>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-        <!-- Placeholder for form response -->
-        <div id="form-response">
-            <!-- Response will be displayed here -->
-        </div>
-    </div>
-
     <!-- Features Card -->
-    {% include "components/card.html" %}
+    <div class="card features-card">
+        <h3>Stack Features</h3>
+        <ul class="features-list">
+            <li>🕸️ Axum web framework</li>
+            <li>📦 Askama templating</li>
+            <li>🚀 Datastar hypermedia</li>
+            <li>🔧 Configuration management</li>
+            <li>📊 OpenTelemetry observability</li>
+            <li>🛡️ Structured error handling</li>
+        </ul>
+    </div>
+
+    <!-- Link to Examples -->
+    <div class="examples-link-section">
+        <a href="/examples" class="examples-link">
+            View Interactive Examples →
+        </a>
+    </div>
 </div>
 {% endblock %}

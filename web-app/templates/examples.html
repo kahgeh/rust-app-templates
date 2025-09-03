@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="examples-grid">
+    <!-- Active Search Card (First Example) -->
+    <div class="example-card" data-example-id="active-search">
+        <h3>Active Search</h3>
+        <p class="example-description">Search examples as you type</p>
+        <div class="example-content">
+            <input 
+                type="text" 
+                placeholder="Search examples..." 
+                data-model="search"
+                data-on-input="@get('/examples/elements/search?q=' + encodeURIComponent(search))"
+                class="search-input"
+            >
+            <div id="search-results" class="search-results">
+                <!-- Search results will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Hypermedia Demo Card -->
+    <div class="example-card" data-example-id="hypermedia-demo">
+        <h3>Hypermedia Demo</h3>
+        <p class="example-description">Dynamic content loading with Datastar</p>
+        <div class="example-content">
+            <button data-on-click="@get('/examples/elements/get-items')">
+                Fetch Data
+            </button>
+            <div id="data-content">
+                <p class="message">Click the button to load data</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Demo Card -->
+    <div class="example-card" data-example-id="form-demo">
+        <h3>Form Demo</h3>
+        <p class="example-description">Form submission with hypermedia responses</p>
+        <div class="example-content">
+            <form data-on-submit="@post('/examples/elements/submit-form', {contentType: 'form'})">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="value">Value:</label>
+                    <input type="text" id="value" name="value" required>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="form-response">
+                <!-- Response will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Switcher Card -->
+    <div class="example-card" data-example-id="theme-switcher">
+        <h3>Server-Side Theme Switcher</h3>
+        <p class="example-description">Change themes with server-generated CSS variables</p>
+        <div class="example-content">
+            <div style="display: flex; flex-direction: column; gap: var(--size-3);">
+                <button 
+                    data-on-click="$theme = 'light'; localStorage.setItem('userTheme', 'light'); @get('/examples/theme/switch?theme=light')"
+                    style="padding: var(--size-3); background: var(--gray-2); color: var(--gray-12); border: var(--border-size-2) solid var(--gray-4); border-radius: var(--radius-2);">
+                    ☀️ Light Theme
+                </button>
+                <button 
+                    data-on-click="$theme = 'dark'; localStorage.setItem('userTheme', 'dark'); @get('/examples/theme/switch?theme=dark')"
+                    style="padding: var(--size-3); background: var(--gray-11); color: var(--gray-1); border: var(--border-size-2) solid var(--gray-9); border-radius: var(--radius-2);">
+                    🌙 Dark Theme
+                </button>
+                <button 
+                    data-on-click="$theme = 'dim'; localStorage.setItem('userTheme', 'dim'); @get('/examples/theme/switch?theme=dim')"
+                    style="padding: var(--size-3); background: var(--slate-11); color: var(--slate-1); border: var(--border-size-2) solid var(--slate-9); border-radius: var(--radius-2);">
+                    🌫️ Dim Theme
+                </button>
+                <button 
+                    data-on-click="$theme = 'grape'; localStorage.setItem('userTheme', 'grape'); @get('/examples/theme/switch?theme=grape')"
+                    style="padding: var(--size-3); background: var(--purple-11); color: var(--purple-1); border: var(--border-size-2) solid var(--purple-9); border-radius: var(--radius-2);">
+                    🍇 Grape Theme
+                </button>
+            </div>
+            <div style="margin-top: var(--size-4); padding: var(--size-3); background: var(--surface-2); border-radius: var(--radius-2);">
+                <p style="color: var(--text-1); margin: 0;">Current theme: <strong data-text="$theme"></strong></p>
+                <p style="color: var(--text-2); margin: 0; margin-top: var(--size-2); font-size: var(--font-size-0);">This theme is persisted and sent with every request!</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

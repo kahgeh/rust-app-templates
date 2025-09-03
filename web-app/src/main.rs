@@ -13,6 +13,7 @@ mod handlers;
 mod settings;
 mod telemetry;
 mod templates;
+mod theme;
 
 use settings::Settings;
 
@@ -80,9 +81,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Build router
     let app = Router::new()
         .route("/", get(handlers::index))
+        .route("/examples", get(handlers::examples))
         .route("/health", get(health))
-        .route("/get-items", get(handlers::get_items))
-        .route("/submit-form", post(handlers::submit_form))
+        .route("/examples/elements/get-items", get(handlers::get_items))
+        .route("/examples/elements/submit-form", post(handlers::submit_form))
+        .route("/examples/elements/search", get(handlers::search))
+        .route("/examples/theme/switch", get(handlers::switch_theme))
         .nest_service("/static", ServeDir::new("web-app/static"))
         .layer(TraceLayer::new_for_http())
         .with_state(app_state);

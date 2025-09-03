@@ -1,0 +1,15 @@
+<div id="search-results" class="search-results">
+    {% if results.is_empty() %}
+        <p class="no-results">No matching examples found</p>
+    {% else %}
+        <div class="results-count">Found {{ results.len() }} matching example(s)</div>
+        <ul class="results-list">
+            {% for result in results %}
+            <li class="result-item">
+                <strong>{{ result.title }}</strong>
+                <span class="result-description">{{ result.description }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

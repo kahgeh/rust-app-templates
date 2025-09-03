@@ -1,19 +1,74 @@
 /* Using Open Props for modern CSS design tokens */
 
-/* Base styles */
-:root {
-    color-scheme: light dark;
-}
+/* Base styles - color-scheme is now set server-side in theme CSS */
 
 body {
     font-family: var(--font-sans);
     line-height: var(--font-lineheight-3);
     color: var(--text-1);
-    background: var(--gradient-7);
+    background: var(--surface-0);
     min-height: 100vh;
 }
 
-.container {
+body>header>nav {
+    display: flex;
+    background: var(--surface-3);
+    padding: var(--size-3) var(--size-6);
+    box-shadow: var(--shadow-1);
+}
+
+/* Index page styles */
+.index-page-container {
+    max-width: calc(var(--size-15) * 2);
+    margin-inline: auto;
+    padding: var(--size-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--size-6);
+    min-height: 100vh;
+    justify-content: center;
+}
+
+.header-section {
+    text-align: center;
+}
+
+.header-section h1 {
+    font-size: var(--font-size-7);
+    color: var(--text-1);
+    margin-bottom: var(--size-3);
+    font-weight: var(--font-weight-8);
+}
+
+.features-card {
+    width: 100%;
+    max-width: calc(var(--size-15) * 1.5);
+}
+
+.examples-link-section {
+    margin-top: var(--size-4);
+}
+
+.examples-link {
+    display: inline-block;
+    padding: var(--size-4) var(--size-6);
+    background: var(--surface-4);
+    color: var(--text-1);
+    text-decoration: none;
+    border-radius: var(--radius-3);
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-6);
+    transition: all var(--animation-fade-in);
+}
+
+.examples-link:hover {
+    background: var(--surface-3);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-4);
+}
+
+.examples-page-container {
     max-width: var(--size-content-3);
     margin-inline: auto;
     padding: var(--size-fluid-3);
@@ -25,6 +80,19 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: var(--size-fluid-3);
     margin-top: var(--size-fluid-3);
+}
+
+/* Examples grid layout - centered with proper spacing */
+.examples-grid {
+    --min-card-width: calc(var(--size-15) * 0.8);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-card-width), 1fr));
+    gap: var(--size-6);
+    width: 100%;
+    max-width: calc(var(--size-15) * 4);
+    margin-inline: auto;
+    margin-block: var(--size-8);
+    padding-inline: var(--size-8);
 }
 
 /* Card styles with Open Props */
@@ -40,6 +108,108 @@ body {
 .card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-4);
+}
+
+/* Example card styles */
+.example-card {
+    background: var(--surface-1);
+    border-radius: var(--radius-3);
+    padding: var(--size-5);
+    box-shadow: var(--shadow-2);
+    border: var(--border-size-1) solid var(--surface-2);
+    transition: all var(--animation-fade-in);
+    display: flex;
+    flex-direction: column;
+    min-height: var(--size-14);
+}
+
+.example-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-4);
+    border-color: var(--surface-4);
+}
+
+.example-card h3 {
+    color: var(--text-1);
+    margin-bottom: var(--size-2);
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-7);
+}
+
+.example-description {
+    color: var(--text-2);
+    font-size: var(--font-size-1);
+    margin-bottom: var(--size-4);
+}
+
+.example-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Active search styles */
+.search-input {
+    width: 100%;
+    padding: var(--size-3);
+    border: var(--border-size-2) solid var(--surface-3);
+    border-radius: var(--radius-2);
+    font-size: var(--font-size-2);
+    background: var(--surface-1);
+    color: var(--text-1);
+    transition: all var(--animation-fade-in);
+    margin-bottom: var(--size-3);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--surface-4);
+    box-shadow: 0 0 0 3px var(--surface-3);
+}
+
+.search-results {
+    padding: var(--size-3);
+    background: var(--surface-2);
+    border-radius: var(--radius-2);
+    min-height: var(--size-11);
+}
+
+.no-results {
+    color: var(--text-2);
+    font-style: italic;
+    text-align: center;
+    padding: var(--size-4);
+}
+
+.results-count {
+    color: var(--text-2);
+    font-size: var(--font-size-0);
+    margin-bottom: var(--size-3);
+    font-weight: var(--font-weight-6);
+}
+
+.results-list {
+    list-style: none;
+    padding: 0;
+}
+
+.result-item {
+    padding: var(--size-3);
+    margin-bottom: var(--size-2);
+    background: var(--surface-1);
+    border-radius: var(--radius-1);
+    border-inline-start: var(--border-size-3) solid var(--surface-4);
+}
+
+.result-item strong {
+    display: block;
+    color: var(--text-1);
+    margin-bottom: var(--size-1);
+}
+
+.result-description {
+    color: var(--text-2);
+    font-size: var(--font-size-0);
 }
 
 .card h2 {
@@ -61,8 +231,8 @@ body {
     display: inline-block;
     padding-inline: var(--size-3);
     padding-block: var(--size-1);
-    background: var(--blue-7);
-    color: var(--gray-0);
+    background: var(--surface-4);
+    color: var(--text-1);
     border-radius: var(--radius-round);
     font-size: var(--font-size-0);
     font-weight: var(--font-weight-6);
@@ -75,8 +245,8 @@ body {
 
 /* Button styles with Open Props */
 button {
-    background: var(--blue-7);
-    color: var(--gray-0);
+    background: var(--surface-4);
+    color: var(--text-1);
     border: none;
     padding-inline: var(--size-4);
     padding-block: var(--size-2);
@@ -89,7 +259,7 @@ button {
 }
 
 button:hover {
-    background: var(--blue-8);
+    background: var(--surface-3);
 }
 
 button:active {
@@ -130,8 +300,8 @@ textarea {
 input:focus,
 textarea:focus {
     outline: none;
-    border-color: var(--blue-7);
-    box-shadow: 0 0 0 3px var(--blue-3);
+    border-color: var(--surface-4);
+    box-shadow: 0 0 0 3px var(--surface-3);
 }
 
 /* Response message with Open Props */
@@ -178,68 +348,62 @@ ul {
     padding-left: 0;
 }
 
+.features-list {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: var(--size-4);
+}
+
 #items-list li {
     padding: var(--size-2);
     background: var(--surface-2);
     margin-bottom: var(--size-2);
     border-radius: var(--radius-1);
-    border-inline-start: var(--border-size-3) solid var(--blue-7);
+    border-inline-start: var(--border-size-3) solid var(--surface-4);
 }
 
 .features-list li {
     padding-block: var(--size-3);
+    padding-inline: var(--size-3);
     border-bottom: var(--border-size-1) solid var(--surface-3);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: var(--size-2);
 }
 
 .features-list li:last-child {
     border-bottom: none;
 }
 
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-    .card {
-        background: var(--surface-2);
-        border-color: var(--surface-3);
-    }
-    
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    textarea {
-        background: var(--surface-2);
-        border-color: var(--surface-4);
-    }
-    
-    .response-message {
-        background: var(--green-12);
-        color: var(--green-2);
-        border-color: var(--green-8);
-    }
-    
-    .response-message.success {
-        background: var(--green-12);
-        color: var(--green-2);
-        border-color: var(--green-8);
-    }
-    
-    #data-content {
-        background: var(--surface-3);
-        border-color: var(--surface-4);
-    }
-}
+/* Theme adjustments are now handled server-side via CSS variables */
+/* All theme-specific colors use Open Props semantic variables:
+   - var(--surface-1) through var(--surface-4) for backgrounds
+   - var(--text-1) and var(--text-2) for text colors
+   These automatically adapt based on the server-generated theme */
 
 /* Responsive design with Open Props */
 @media (max-width: 768px) {
     .container {
         padding: var(--size-3);
     }
-    
+
     .content-grid {
         grid-template-columns: 1fr;
         gap: var(--size-3);
     }
-    
+
+    .examples-grid {
+        grid-template-columns: 1fr;
+        padding-inline: var(--size-3);
+        gap: var(--size-4);
+    }
+
     .card {
+        padding: var(--size-4);
+    }
+
+    .example-card {
         padding: var(--size-4);
     }
 }
