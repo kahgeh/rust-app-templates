@@ -22,18 +22,18 @@ pub fn get_theme_variables(theme: &Theme) -> String {
   /* Light theme - default Open Props light mode */
   color-scheme: light;
   
-  /* Background gradient */
-  --surface-0: var(--gradient-28);  /* Subtle light gradient */
+  /* Background gradient - diagonal from top-left to bottom-right */
+  --surface-0: linear-gradient(135deg, var(--gray-2), var(--gray-5));
   
   /* Text colors */
   --text-1: var(--gray-12);
   --text-2: var(--gray-7);
   
   /* Surface colors */
-  --surface-1: var(--gray-0);
-  --surface-2: var(--gray-1);
-  --surface-3: var(--gray-2);
-  --surface-4: var(--gray-3);
+  --surface-1: var(--gray-1);
+  --surface-2: var(--gray-3);
+  --surface-3: var(--gray-5);
+  --surface-4: var(--gray-6);
   
   /* Shadows */
   --surface-shadow: var(--gray-3-hsl);
