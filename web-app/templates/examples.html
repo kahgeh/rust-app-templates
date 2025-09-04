@@ -50,6 +50,14 @@
                $isFlipping = true;
                @get('/examples/code/{{ example.id }}');
              "
+             data-on-animationend="
+               if ($closing && $activeCardId === '{{ example.id }}') {
+                 $activeCardId = '';
+                 $isFlipping = false;
+                 $closing = false;
+                 $activeCardRect = {top: 0, left: 0, width: 0, height: 0};
+               }
+             "
              data-style-position="$activeCardId === '{{ example.id }}' ? 'fixed' : ''"
              data-style-top="$activeCardId === '{{ example.id }}' ? $activeCardRect.top + 'px' : ''"
              data-style-left="$activeCardId === '{{ example.id }}' ? $activeCardRect.left + 'px' : ''"
@@ -70,15 +78,7 @@
                         <h2>{{ example.title }}</h2>
                         <button 
                             class="close-btn"
-                            data-on-click__stop="
-                              $closing = true;
-                              setTimeout(() => {
-                                $activeCardId = '';
-                                $isFlipping = false;
-                                $closing = false;
-                                $activeCardRect = {top: 0, left: 0, width: 0, height: 0};
-                              }, 600);
-                            ">
+                            data-on-click__stop="$closing = true">
                             ✕
                         </button>
                     </div>
