@@ -426,19 +426,19 @@ ul {
 /* Syntax highlighting token colors as CSS custom properties */
 :root {
     /* Dark theme token colors (for dark background code blocks) */
-    --token-keyword-dark: #ff79c6;
-    --token-string-dark: #50fa7b;
-    --token-number-dark: #ffb86c;
-    --token-comment-dark: #6272a4;
-    --token-function-dark: #8be9fd;
-    --token-type-dark: #66d9ef;
-    --token-operator-dark: #f8f8f2;
-    --token-punctuation-dark: #f8f8f2;
-    --token-variable-dark: #bd93f9;
-    --token-constant-dark: #ff79c6;
-    --token-tag-dark: #ff5555;
-    --token-attribute-dark: #ffb86c;
-    --token-namespace-dark: #50fa7b;
+    --token-keyword-dark: var(--pink-3);
+    --token-string-dark: var(--green-3);
+    --token-number-dark: var(--orange-3);
+    --token-comment-dark: var(--gray-5);
+    --token-function-dark: var(--cyan-3);
+    --token-type-dark: var(--blue-3);
+    --token-operator-dark: var(--gray-1);
+    --token-punctuation-dark: var(--gray-2);
+    --token-variable-dark: var(--purple-3);
+    --token-constant-dark: var(--pink-3);
+    --token-tag-dark: var(--red-3);
+    --token-attribute-dark: var(--orange-3);
+    --token-namespace-dark: var(--teal-3);
     
     /* Light theme token colors (using open-props colors) */
     --token-keyword-light: var(--purple-5);
