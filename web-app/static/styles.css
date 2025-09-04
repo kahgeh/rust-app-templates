@@ -423,155 +423,162 @@ ul {
     line-height: var(--font-lineheight-5);
 }
 
-/* Inkjet token styles for code blocks in examples modal (dark background) */
+/* Syntax highlighting token colors as CSS custom properties */
+:root {
+    /* Dark theme token colors (for dark background code blocks) */
+    --token-keyword-dark: #ff79c6;
+    --token-string-dark: #50fa7b;
+    --token-number-dark: #ffb86c;
+    --token-comment-dark: #6272a4;
+    --token-function-dark: #8be9fd;
+    --token-type-dark: #66d9ef;
+    --token-operator-dark: #f8f8f2;
+    --token-punctuation-dark: #f8f8f2;
+    --token-variable-dark: #bd93f9;
+    --token-constant-dark: #ff79c6;
+    --token-tag-dark: #ff5555;
+    --token-attribute-dark: #ffb86c;
+    --token-namespace-dark: #50fa7b;
+    
+    /* Light theme token colors (using open-props colors) */
+    --token-keyword-light: var(--purple-5);
+    --token-string-light: var(--green-6);
+    --token-number-light: var(--orange-6);
+    --token-comment-light: var(--text-2);
+    --token-function-light: var(--blue-6);
+    --token-type-light: var(--cyan-6);
+    --token-operator-light: var(--text-1);
+    --token-punctuation-light: var(--text-2);
+    --token-variable-light: var(--indigo-6);
+    --token-constant-light: var(--pink-6);
+    --token-tag-light: var(--red-6);
+    --token-attribute-light: var(--orange-6);
+    --token-namespace-light: var(--teal-6);
+}
+
+/* Apply token styles for code blocks in examples modal (dark background) */
 .code-blocks-container .keyword {
-    color: #ff79c6;
+    color: var(--token-keyword-dark);
     font-weight: var(--font-weight-6);
 }
 
 .code-blocks-container .string {
-    color: #50fa7b;
+    color: var(--token-string-dark);
 }
 
 .code-blocks-container .number {
-    color: #ffb86c;
+    color: var(--token-number-dark);
 }
 
 .code-blocks-container .comment {
-    color: #6272a4;
+    color: var(--token-comment-dark);
     font-style: italic;
 }
 
 .code-blocks-container .function {
-    color: #8be9fd;
+    color: var(--token-function-dark);
 }
 
 .code-blocks-container .type {
-    color: #66d9ef;
+    color: var(--token-type-dark);
 }
 
 .code-blocks-container .operator {
-    color: #f8f8f2;
+    color: var(--token-operator-dark);
 }
 
 .code-blocks-container .punctuation {
-    color: #f8f8f2;
+    color: var(--token-punctuation-dark);
 }
 
 .code-blocks-container .variable {
-    color: #bd93f9;
+    color: var(--token-variable-dark);
 }
 
 .code-blocks-container .constant {
-    color: #ff79c6;
+    color: var(--token-constant-dark);
 }
 
 .code-blocks-container .tag {
-    color: #ff5555;
+    color: var(--token-tag-dark);
 }
 
 .code-blocks-container .attribute {
-    color: #ffb86c;
+    color: var(--token-attribute-dark);
 }
 
 .code-blocks-container .namespace {
-    color: #50fa7b;
+    color: var(--token-namespace-dark);
 }
 
-/* Original styles for non-dark code blocks */
+/* Apply token styles for regular code blocks (light background) */
 .code-block .keyword {
-    color: var(--purple-5);
+    color: var(--token-keyword-light);
     font-weight: var(--font-weight-6);
 }
 
 .code-block .string {
-    color: var(--green-6);
+    color: var(--token-string-light);
 }
 
 .code-block .number {
-    color: var(--orange-6);
+    color: var(--token-number-light);
 }
 
 .code-block .comment {
-    color: var(--text-2);
+    color: var(--token-comment-light);
     font-style: italic;
 }
 
 .code-block .function {
-    color: var(--blue-6);
+    color: var(--token-function-light);
 }
 
 .code-block .type {
-    color: var(--cyan-6);
+    color: var(--token-type-light);
 }
 
 .code-block .operator {
-    color: var(--text-1);
+    color: var(--token-operator-light);
 }
 
 .code-block .punctuation {
-    color: var(--text-2);
+    color: var(--token-punctuation-light);
 }
 
 .code-block .variable {
-    color: var(--indigo-6);
+    color: var(--token-variable-light);
 }
 
 .code-block .constant {
-    color: var(--pink-6);
+    color: var(--token-constant-light);
 }
 
 .code-block .tag {
-    color: var(--red-6);
+    color: var(--token-tag-light);
 }
 
 .code-block .attribute {
-    color: var(--orange-6);
+    color: var(--token-attribute-light);
 }
 
 .code-block .namespace {
-    color: var(--teal-6);
+    color: var(--token-namespace-light);
 }
 
-/* Dark theme adjustments for syntax highlighting */
+/* Dark theme adjustments - update token colors for dark mode */
 @media (prefers-color-scheme: dark) {
-    .code-block .keyword {
-        color: var(--purple-4);
-    }
-    
-    .code-block .string {
-        color: var(--green-4);
-    }
-    
-    .code-block .number {
-        color: var(--orange-4);
-    }
-    
-    .code-block .function {
-        color: var(--blue-4);
-    }
-    
-    .code-block .type {
-        color: var(--cyan-4);
-    }
-    
-    .code-block .variable {
-        color: var(--indigo-4);
-    }
-    
-    .code-block .constant {
-        color: var(--pink-4);
-    }
-    
-    .code-block .tag {
-        color: var(--red-4);
-    }
-    
-    .code-block .attribute {
-        color: var(--orange-4);
-    }
-    
-    .code-block .namespace {
-        color: var(--teal-4);
+    :root {
+        /* Override light token colors with darker variants for dark mode */
+        --token-keyword-light: var(--purple-4);
+        --token-string-light: var(--green-4);
+        --token-number-light: var(--orange-4);
+        --token-function-light: var(--blue-4);
+        --token-type-light: var(--cyan-4);
+        --token-variable-light: var(--indigo-4);
+        --token-constant-light: var(--pink-4);
+        --token-tag-light: var(--red-4);
+        --token-attribute-light: var(--orange-4);
+        --token-namespace-light: var(--teal-4);
     }
 }
