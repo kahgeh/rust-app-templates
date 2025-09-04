@@ -34,7 +34,7 @@
     {% if example.id != "active-search" %}
     <div class="example-card clickable-card" 
          data-example-id="{{ example.id }}"
-         data-on-click="$exampleModal = '{{ example.id }}'; document.getElementById('modal-{{ example.id }}').showModal()">
+         data-on-click="$exampleModal = '{{ example.id }}'; document.getElementById('modal-{{ example.id }}').showModal(); @get('/examples/code/{{ example.id }}')">
         <h3>{{ example.title }}</h3>
         <p class="example-description">{{ example.description }}</p>
     </div>
@@ -52,48 +52,23 @@
             </div>
             
             <div class="modal-body">
-                <!-- Tabs -->
-                <div class="tabs">
-                    <button 
-                        class="tab-btn"
-                        data-on-click="$activeTab_{{ example.id }} = 'demo'"
-                        data-class-active="$activeTab_{{ example.id }} === 'demo'">
-                        Demo
-                    </button>
-                    <button 
-                        class="tab-btn"
-                        data-on-click="$activeTab_{{ example.id }} = 'frontend'"
-                        data-class-active="$activeTab_{{ example.id }} === 'frontend'">
-                        Frontend Code
-                    </button>
-                    <button 
-                        class="tab-btn"
-                        data-on-click="$activeTab_{{ example.id }} = 'backend'; @get('/examples/code/{{ example.id }}')"
-                        data-class-active="$activeTab_{{ example.id }} === 'backend'">
-                        Backend Code
-                    </button>
+                <!-- Demo section at the top -->
+                <div class="demo-section">
+                    <div class="example-demo">
+                        {{ example.html | safe }}
+                    </div>
                 </div>
                 
-                <!-- Tab content -->
-                <div class="tab-content">
-                    <!-- Demo tab -->
-                    <div data-show="$activeTab_{{ example.id }} === 'demo' || !$activeTab_{{ example.id }}">
-                        <div class="example-demo">
-                            {{ example.html | safe }}
-                        </div>
-                    </div>
-                    
-                    <!-- Frontend code tab -->
-                    <div data-show="$activeTab_{{ example.id }} === 'frontend'">
-                        <pre class="code-block"><code class="language-html">{{ example.highlighted_html|safe }}</code></pre>
-                    </div>
-                    
-                    <!-- Backend code tab -->
-                    <div data-show="$activeTab_{{ example.id }} === 'backend'">
-                        <pre class="code-block">
-                            <code class="language-rust" id="backend-{{ example.id }}">Loading...</code>
-                        </pre>
-                    </div>
+                <!-- Code blocks side by side -->
+                <div class="code-blocks-container">
+                    <pre class="code-block code-block-dark">
+                        <div class="code-header">Frontend Code</div>
+                        <code class="language-html">{{ example.highlighted_html|safe }}</code>
+                    </pre>
+                    <pre class="code-block code-block-dark">
+                        <div class="code-header">Backend Code</div>
+                        <code class="language-rust" id="backend-{{ example.id }}">Loading...</code>
+                    </pre>
                 </div>
             </div>
         </div>
@@ -181,6 +156,7 @@
     padding: var(--size-4);
     border-bottom: var(--border-size-1) solid var(--surface-3);
     background: var(--surface-2);
+    flex-shrink: 0;
 }
 
 .modal-header h2 {
@@ -204,72 +180,74 @@
 }
 
 .modal-body {
-    flex: 1;
+    flex: 1 1 auto;
     overflow-y: auto;
-    padding: var(--size-6);
+    padding: var(--size-4);
     display: flex;
     flex-direction: column;
+    gap: var(--size-4);
+    min-height: 0;
 }
 
-/* Tabs */
-.tabs {
-    display: flex;
-    gap: var(--size-2);
-    border-bottom: var(--border-size-1) solid var(--surface-3);
+/* Demo section */
+.demo-section {
+    flex-shrink: 0;
     margin-bottom: var(--size-4);
-}
-
-.tab-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-2);
-    padding: var(--size-3) var(--size-4);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
-}
-
-.tab-btn:hover {
-    color: var(--text-1);
-}
-
-.tab-btn.active {
-    color: var(--brand);
-    border-bottom-color: var(--brand);
-}
-
-.tab-content {
-    flex: 1;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.tab-content > div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
 }
 
 .example-demo {
     padding: var(--size-4);
     background: var(--surface-2);
     border-radius: var(--radius-2);
-    flex: 1;
+    border: var(--border-size-1) solid var(--surface-3);
+    max-height: 40vh;
+    overflow-y: auto;
 }
 
-.code-block {
-    background: var(--surface-3);
-    padding: var(--size-4);
-    border-radius: var(--radius-2);
-    overflow: auto;
-    flex: 1;
+/* Code blocks container */
+.code-blocks-container {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
 }
 
-.code-block code {
+/* Each pre element takes equal space - force 50% width */
+.code-blocks-container > pre {
+    flex: 1 1 50%;
+    margin: 0;
+    background: #000000;
+    border: var(--border-size-1) solid #333333;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: calc(50% - 0.5rem);
+}
+
+/* Header inside pre */
+.code-header {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid #333333;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* Code inside pre */
+.code-blocks-container pre code {
+    flex: 1;
+    display: block;
+    padding: 1rem;
+    color: #ffffff;
     font-family: var(--font-mono);
-    font-size: var(--font-size-0);
-    color: var(--text-1);
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    overflow-y: auto;
+    white-space: pre;
 }
 
 /* Active search card specific styles */
@@ -295,6 +273,20 @@
 
 .search-results {
     margin-top: var(--size-3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .code-blocks-container {
+        flex-direction: column;
+    }
+    
+    .code-blocks-container > pre {
+        max-width: 100%;
+        flex: 1 1 auto;
+        min-height: 200px;
+        max-height: 400px;
+    }
 }
 </style>
 {% endblock %}

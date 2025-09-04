@@ -423,7 +423,62 @@ ul {
     line-height: var(--font-lineheight-5);
 }
 
-/* Inkjet token styles - adapt to light/dark theme */
+/* Inkjet token styles for dark/black background */
+.code-block-dark .keyword {
+    color: #ff79c6;
+    font-weight: var(--font-weight-6);
+}
+
+.code-block-dark .string {
+    color: #50fa7b;
+}
+
+.code-block-dark .number {
+    color: #ffb86c;
+}
+
+.code-block-dark .comment {
+    color: #6272a4;
+    font-style: italic;
+}
+
+.code-block-dark .function {
+    color: #8be9fd;
+}
+
+.code-block-dark .type {
+    color: #66d9ef;
+}
+
+.code-block-dark .operator {
+    color: #f8f8f2;
+}
+
+.code-block-dark .punctuation {
+    color: #f8f8f2;
+}
+
+.code-block-dark .variable {
+    color: #bd93f9;
+}
+
+.code-block-dark .constant {
+    color: #ff79c6;
+}
+
+.code-block-dark .tag {
+    color: #ff5555;
+}
+
+.code-block-dark .attribute {
+    color: #ffb86c;
+}
+
+.code-block-dark .namespace {
+    color: #50fa7b;
+}
+
+/* Original styles for non-dark code blocks */
 .code-block .keyword {
     color: var(--purple-5);
     font-weight: var(--font-weight-6);
