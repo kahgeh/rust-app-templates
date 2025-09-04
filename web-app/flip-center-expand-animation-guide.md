@@ -44,21 +44,26 @@ data-signals-is-flipping="false"
 - Flipper enables 3D rotation
 - Two faces allow content switching via rotation
 
-#### 3. Position Capture Logic (examples.html:39-51)
+#### 3. Position Capture Logic (examples.html:41-53)
 ```javascript
 data-on-click="
-  const rect = evt.currentTarget.getBoundingClientRect();
-  $activeCardRect = {
-    top: rect.top,
-    left: rect.left,
-    width: rect.width,
-    height: rect.height
-  };
-  $activeCardId = '{{ example.id }}';
-  $isFlipping = true;
+  if ($activeCardId === '') {  // Only trigger the card isn't morphing or have already become the full page modal content, if we don't have this guard, the original location will be overriden. 
+    const rect = evt.currentTarget.getBoundingClientRect();
+    $activeCardRect = {
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height
+    };
+    $activeCardId = '{{ example.id }}';
+    $isFlipping = true;
+  }
 "
 ```
-**Purpose:** Capture exact viewport position before breaking free from grid, preventing position jump.
+**Purpose:** 
+- Check if a modal is already open before triggering animation
+- Capture exact viewport position before breaking free from grid
+- Prevents position jump and unwanted re-triggering
 
 #### 4. Dynamic Positioning (examples.html:52-58)
 ```html
@@ -94,6 +99,7 @@ data-style-left="$activeCardId === '{{ example.id }}' ? $activeCardRect.left + '
 ✅ Modal content displays on card back face
 ✅ Grid layout remains stable (no jumping/collapsing)
 ✅ Smooth 3D rotation animation
+✅ Interactive elements in modal work correctly (no unintended re-triggering)
 
 ---
 
@@ -232,7 +238,7 @@ Complete the transformation by expanding cards to full viewport size, creating a
 ## Complete Animation Sequence
 
 ### Opening (Card → Modal)
-1. **User clicks card** in grid
+1. **User clicks card** in grid (only if no modal is currently open)
 2. **Position captured** via `getBoundingClientRect()`
 3. **Card breaks free** from grid with `position: fixed`
 4. **Simultaneous animations begin** (600ms duration):
@@ -241,6 +247,7 @@ Complete the transformation by expanding cards to full viewport size, creating a
    - **Expand:** Card grows from original size to 100vw × 100vh
 5. **Modal content revealed** on back face
 6. **Animation completes** with full-screen modal
+7. **Interactive elements** (inputs, buttons, etc.) work normally without triggering animation
 
 ### Closing (Modal → Card)
 1. **User clicks close button**
@@ -267,6 +274,7 @@ Complete the transformation by expanding cards to full viewport size, creating a
 - **z-index: 9999** - Ensures modal appears above all page content
 - **animationend event** - Replaces fragile timeout for robust state cleanup
 - **transform: none** reset - Prevents transform conflicts during animation
+- **$activeCardId check in click handler** - Prevents re-triggering animation when modal is open, fixing issues with interactive elements inside modal
 
 ### Performance Optimizations
 - Uses CSS transforms (GPU accelerated)
