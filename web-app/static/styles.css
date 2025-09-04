@@ -408,23 +408,6 @@ ul {
     }
 }
 
-/* Syntax highlighting styles for inkjet */
-.code-block {
-    background: var(--surface-2);
-    border-radius: var(--radius-2);
-    padding: var(--size-4);
-    overflow-x: auto;
-    margin-block: var(--size-3);
-}
-
-.code-block code {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-0);
-    line-height: var(--font-lineheight-5);
-}
-
-/* Syntax highlighting token colors are now provided by the server 
-   based on the current theme via CSS custom properties */
 
 /* Apply token styles using server-generated variables */
 .keyword {
@@ -480,4 +463,3 @@ ul {
 .namespace {
     color: var(--token-namespace);
 }
-
