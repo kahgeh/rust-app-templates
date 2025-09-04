@@ -118,6 +118,86 @@ pub fn get_theme_variables(theme: &Theme) -> String {
     .to_string()
 }
 
+/// Generate syntax highlighting CSS variables for the current theme
+pub fn get_syntax_highlighting_variables(theme: &Theme) -> String {
+    match theme {
+        Theme::Light => {
+            r#"
+  /* Light theme syntax highlighting */
+  --token-keyword: var(--purple-5);
+  --token-string: var(--green-6);
+  --token-number: var(--orange-6);
+  --token-comment: var(--text-2);
+  --token-function: var(--blue-6);
+  --token-type: var(--cyan-6);
+  --token-operator: var(--text-1);
+  --token-punctuation: var(--text-2);
+  --token-variable: var(--indigo-6);
+  --token-constant: var(--pink-6);
+  --token-tag: var(--red-6);
+  --token-attribute: var(--orange-6);
+  --token-namespace: var(--teal-6);
+            "#
+        }
+        Theme::Dark => {
+            r#"
+  /* Dark theme syntax highlighting */
+  --token-keyword: var(--pink-3);
+  --token-string: var(--green-3);
+  --token-number: var(--orange-3);
+  --token-comment: var(--gray-5);
+  --token-function: var(--cyan-3);
+  --token-type: var(--blue-3);
+  --token-operator: var(--gray-1);
+  --token-punctuation: var(--gray-2);
+  --token-variable: var(--purple-3);
+  --token-constant: var(--pink-3);
+  --token-tag: var(--red-3);
+  --token-attribute: var(--orange-3);
+  --token-namespace: var(--teal-3);
+            "#
+        }
+        Theme::Dim => {
+            r#"
+  /* Dim theme syntax highlighting */
+  --token-keyword: var(--purple-4);
+  --token-string: var(--green-4);
+  --token-number: var(--orange-4);
+  --token-comment: var(--gray-6);
+  --token-function: var(--blue-4);
+  --token-type: var(--cyan-4);
+  --token-operator: var(--gray-3);
+  --token-punctuation: var(--gray-4);
+  --token-variable: var(--indigo-4);
+  --token-constant: var(--pink-4);
+  --token-tag: var(--red-4);
+  --token-attribute: var(--orange-4);
+  --token-namespace: var(--teal-4);
+            "#
+        }
+        Theme::Grape => {
+            r#"
+  /* Grape theme syntax highlighting */
+  --token-keyword: var(--purple-3);
+  --token-string: var(--green-3);
+  --token-number: var(--orange-3);
+  --token-comment: var(--purple-6);
+  --token-function: var(--pink-3);
+  --token-type: var(--purple-4);
+  --token-operator: var(--purple-2);
+  --token-punctuation: var(--purple-3);
+  --token-variable: var(--pink-4);
+  --token-constant: var(--purple-3);
+  --token-tag: var(--pink-3);
+  --token-attribute: var(--orange-3);
+  --token-namespace: var(--teal-3);
+            "#
+        }
+    }
+    .trim()
+    .to_string()
+}
+
 /// Parse theme from string (for handling user input)
 impl Theme {
     pub fn from_str(s: &str) -> Option<Theme> {

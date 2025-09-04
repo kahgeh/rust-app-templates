@@ -423,162 +423,61 @@ ul {
     line-height: var(--font-lineheight-5);
 }
 
-/* Syntax highlighting token colors as CSS custom properties */
-:root {
-    /* Dark theme token colors (for dark background code blocks) */
-    --token-keyword-dark: var(--pink-3);
-    --token-string-dark: var(--green-3);
-    --token-number-dark: var(--orange-3);
-    --token-comment-dark: var(--gray-5);
-    --token-function-dark: var(--cyan-3);
-    --token-type-dark: var(--blue-3);
-    --token-operator-dark: var(--gray-1);
-    --token-punctuation-dark: var(--gray-2);
-    --token-variable-dark: var(--purple-3);
-    --token-constant-dark: var(--pink-3);
-    --token-tag-dark: var(--red-3);
-    --token-attribute-dark: var(--orange-3);
-    --token-namespace-dark: var(--teal-3);
-    
-    /* Light theme token colors (using open-props colors) */
-    --token-keyword-light: var(--purple-5);
-    --token-string-light: var(--green-6);
-    --token-number-light: var(--orange-6);
-    --token-comment-light: var(--text-2);
-    --token-function-light: var(--blue-6);
-    --token-type-light: var(--cyan-6);
-    --token-operator-light: var(--text-1);
-    --token-punctuation-light: var(--text-2);
-    --token-variable-light: var(--indigo-6);
-    --token-constant-light: var(--pink-6);
-    --token-tag-light: var(--red-6);
-    --token-attribute-light: var(--orange-6);
-    --token-namespace-light: var(--teal-6);
-}
+/* Syntax highlighting token colors are now provided by the server 
+   based on the current theme via CSS custom properties */
 
-/* Apply token styles for code blocks in examples modal (dark background) */
-.code-blocks-container .keyword {
-    color: var(--token-keyword-dark);
+/* Apply token styles using server-generated variables */
+.keyword {
+    color: var(--token-keyword);
     font-weight: var(--font-weight-6);
 }
 
-.code-blocks-container .string {
-    color: var(--token-string-dark);
+.string {
+    color: var(--token-string);
 }
 
-.code-blocks-container .number {
-    color: var(--token-number-dark);
+.number {
+    color: var(--token-number);
 }
 
-.code-blocks-container .comment {
-    color: var(--token-comment-dark);
+.comment {
+    color: var(--token-comment);
     font-style: italic;
 }
 
-.code-blocks-container .function {
-    color: var(--token-function-dark);
+.function {
+    color: var(--token-function);
 }
 
-.code-blocks-container .type {
-    color: var(--token-type-dark);
+.type {
+    color: var(--token-type);
 }
 
-.code-blocks-container .operator {
-    color: var(--token-operator-dark);
+.operator {
+    color: var(--token-operator);
 }
 
-.code-blocks-container .punctuation {
-    color: var(--token-punctuation-dark);
+.punctuation {
+    color: var(--token-punctuation);
 }
 
-.code-blocks-container .variable {
-    color: var(--token-variable-dark);
+.variable {
+    color: var(--token-variable);
 }
 
-.code-blocks-container .constant {
-    color: var(--token-constant-dark);
+.constant {
+    color: var(--token-constant);
 }
 
-.code-blocks-container .tag {
-    color: var(--token-tag-dark);
+.tag {
+    color: var(--token-tag);
 }
 
-.code-blocks-container .attribute {
-    color: var(--token-attribute-dark);
+.attribute {
+    color: var(--token-attribute);
 }
 
-.code-blocks-container .namespace {
-    color: var(--token-namespace-dark);
+.namespace {
+    color: var(--token-namespace);
 }
 
-/* Apply token styles for regular code blocks (light background) */
-.code-block .keyword {
-    color: var(--token-keyword-light);
-    font-weight: var(--font-weight-6);
-}
-
-.code-block .string {
-    color: var(--token-string-light);
-}
-
-.code-block .number {
-    color: var(--token-number-light);
-}
-
-.code-block .comment {
-    color: var(--token-comment-light);
-    font-style: italic;
-}
-
-.code-block .function {
-    color: var(--token-function-light);
-}
-
-.code-block .type {
-    color: var(--token-type-light);
-}
-
-.code-block .operator {
-    color: var(--token-operator-light);
-}
-
-.code-block .punctuation {
-    color: var(--token-punctuation-light);
-}
-
-.code-block .variable {
-    color: var(--token-variable-light);
-}
-
-.code-block .constant {
-    color: var(--token-constant-light);
-}
-
-.code-block .tag {
-    color: var(--token-tag-light);
-}
-
-.code-block .attribute {
-    color: var(--token-attribute-light);
-}
-
-.code-block .namespace {
-    color: var(--token-namespace-light);
-}
-
-/* Dark theme adjustments - update token colors for dark mode */
-@media (prefers-color-scheme: dark) {
-    :root {
-        /* Override light token colors with darker variants for dark mode */
-        --token-keyword-light: var(--purple-4);
-        --token-string-light: var(--green-4);
-        --token-number-light: var(--orange-4);
-        --token-function-light: var(--blue-4);
-        --token-type-light: var(--cyan-4);
-        --token-variable-light: var(--indigo-4);
-        --token-constant-light: var(--pink-4);
-        --token-tag-light: var(--red-4);
-        --token-attribute-light: var(--orange-4);
-        --token-namespace-light: var(--teal-4);
-    }
-}

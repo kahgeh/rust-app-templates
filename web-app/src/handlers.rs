@@ -1,7 +1,7 @@
 use crate::{
     syntax_highlight::highlight_code,
     templates::{BackendCodeTemplate, ExamplesTemplate, IndexTemplate},
-    theme::{get_theme_variables, Theme},
+    theme::{get_syntax_highlighting_variables, get_theme_variables, Theme},
     AppState,
 };
 use axum::{
@@ -38,11 +38,13 @@ pub async fn index(State(state): State<AppState>, headers: HeaderMap) -> IndexTe
     // Extract theme from request (will be in signals once we handle them)
     let theme = extract_theme_from_headers(&headers);
     let theme_css = get_theme_variables(&theme);
+    let syntax_css = get_syntax_highlighting_variables(&theme);
 
     IndexTemplate {
         title: state.settings.application.name.clone(),
         environment: state.settings.application.environment.clone(),
         theme_css,
+        syntax_css,
     }
 }
 
@@ -51,6 +53,7 @@ pub async fn examples(State(state): State<AppState>, headers: HeaderMap) -> Exam
     // Extract theme from request
     let theme = extract_theme_from_headers(&headers);
     let theme_css = get_theme_variables(&theme);
+    let syntax_css = get_syntax_highlighting_variables(&theme);
     
     // Get generated examples data and add syntax highlighting
     let mut examples = crate::examples_gen::get_examples();
@@ -67,6 +70,7 @@ pub async fn examples(State(state): State<AppState>, headers: HeaderMap) -> Exam
         title: state.settings.application.name.clone(),
         environment: state.settings.application.environment.clone(),
         theme_css,
+        syntax_css,
         examples,
     }
 }

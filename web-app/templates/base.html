@@ -14,6 +14,13 @@
             {{ theme_css | safe }}
         }
     </style>
+    
+    <!-- Server-generated syntax highlighting variables -->
+    <style id="syntax-highlighting">
+        :root {
+            {{ syntax_css | safe }}
+        }
+    </style>
 </head>
 <body data-signals-theme="(document.cookie.match(/theme=([^;]+)/) || ['','light'])[1]">
     <!-- Global Datastar signals that persist across all pages -->

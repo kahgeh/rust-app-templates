@@ -9,6 +9,7 @@ pub struct IndexTemplate {
     pub title: String,
     pub environment: String,
     pub theme_css: String,
+    pub syntax_css: String,
 }
 
 #[derive(Template)]
@@ -31,6 +32,7 @@ pub struct ExamplesTemplate {
     pub title: String,
     pub environment: String,
     pub theme_css: String,
+    pub syntax_css: String,
     pub examples: Vec<crate::examples_gen::ExampleData>,
 }
 
