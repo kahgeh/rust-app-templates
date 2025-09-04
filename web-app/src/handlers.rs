@@ -1,41 +1,19 @@
 use crate::{
-    error::AppError,
-    templates::{
-        DataItemsTemplate, ExamplesTemplate, FormResponseTemplate, IndexTemplate,
-        SearchResultsTemplate,
-    },
+    templates::{BackendCodeTemplate, ExamplesTemplate, IndexTemplate},
     theme::{get_theme_variables, Theme},
     AppState,
 };
 use axum::{
-    extract::{Query, State},
-    http::{header, HeaderMap},
-    response::{Html, IntoResponse, Response},
-    Form,
+    extract::{Path, State},
+    http::header,
+    http::HeaderMap,
+    response::IntoResponse,
 };
-use serde::Deserialize;
+use std::fs;
 
-#[derive(Deserialize)]
-pub struct SubmitRequest {
-    pub name: String,
-    pub value: String,
-}
-
-#[derive(Deserialize)]
-pub struct SearchQuery {
-    pub q: String,
-}
-
-#[derive(Deserialize)]
-pub struct ThemeQuery {
-    pub theme: String,
-}
-
-#[derive(Clone)]
-pub struct SearchResult {
-    pub title: String,
-    pub description: String,
-}
+pub use crate::examples::{
+    get_items, search, submit_form, switch_theme, SearchResult,
+};
 
 // Helper function to extract theme from cookies
 fn extract_theme_from_headers(headers: &HeaderMap) -> Theme {
@@ -72,154 +50,61 @@ pub async fn examples(State(state): State<AppState>, headers: HeaderMap) -> Exam
     // Extract theme from request
     let theme = extract_theme_from_headers(&headers);
     let theme_css = get_theme_variables(&theme);
+    
+    // Get generated examples data
+    let examples = crate::examples_gen::get_examples();
 
     ExamplesTemplate {
         title: state.settings.application.name.clone(),
         environment: state.settings.application.environment.clone(),
         theme_css,
+        examples,
     }
 }
 
-// Hypermedia endpoint to get data - returns HTML fragment
-pub async fn get_items(
-    State(_state): State<AppState>,
-    headers: HeaderMap,
-) -> Result<impl IntoResponse, AppError> {
+// Handler to serve backend code for examples
+pub async fn get_example_code(Path(example_id): Path<String>, headers: HeaderMap) -> impl IntoResponse {
     // Only serve fragments for Datastar requests
     if headers.get("datastar-request").is_none() {
-        return Err(AppError::not_found(
-            "This endpoint only serves HTML fragments",
-        ));
+        return BackendCodeTemplate {
+            example_id: example_id.clone(),
+            code: "// This endpoint only serves Datastar fragments".to_string(),
+        }.into_response();
     }
-
-    let template = DataItemsTemplate {
-        message: "Hello from Rust Web Starter!".to_string(),
-        timestamp: chrono::Utc::now(),
-        items: vec![
-            "Item 1".to_string(),
-            "Item 2".to_string(),
-            "Item 3".to_string(),
-        ],
+    
+    let file_path = format!("src/examples/{}.rs", example_id.replace('-', "_"));
+    
+    let code = match fs::read_to_string(&file_path) {
+        Ok(content) => {
+            // Filter out the metadata comment lines
+            content
+                .lines()
+                .skip_while(|line| line.starts_with("//!"))
+                .collect::<Vec<&str>>()
+                .join("\n")
+                .trim_start()
+                .to_string()
+        }
+        Err(e) => {
+            // Try alternative path from workspace root
+            let alt_path = format!("web-app/src/examples/{}.rs", example_id.replace('-', "_"));
+            match fs::read_to_string(&alt_path) {
+                Ok(content) => {
+                    content
+                        .lines()
+                        .skip_while(|line| line.starts_with("//!"))
+                        .collect::<Vec<&str>>()
+                        .join("\n")
+                        .trim_start()
+                        .to_string()
+                }
+                Err(_) => format!("// Example code not found\n// Tried: {}\n// Alt: {}\n// Error: {}", file_path, alt_path, e),
+            }
+        }
     };
-
-    // Return HTML fragment for DOM patching
-    Ok(template.into_response())
-}
-
-// Hypermedia endpoint to process form data - returns HTML fragment
-pub async fn submit_form(
-    State(_state): State<AppState>,
-    headers: HeaderMap,
-    Form(payload): Form<SubmitRequest>,
-) -> Result<impl IntoResponse, AppError> {
-    // Validate input
-    if payload.name.is_empty() {
-        return Err(AppError::bad_request("Name cannot be empty"));
-    }
-    if headers.get("datastar-request").is_none() {
-        return Err(AppError::not_found(
-            "This endpoint only serves HTML fragments",
-        ));
-    }
-
-    tracing::info!("Received submission: {} = {}", payload.name, payload.value);
-
-    let template = FormResponseTemplate {
-        message: format!("Successfully processed: {}", payload.name),
-    };
-
-    let response = template.into_response();
-    Ok(response)
-}
-
-// Search endpoint for active search functionality
-pub async fn search(
-    State(_state): State<AppState>,
-    headers: HeaderMap,
-    Query(params): Query<SearchQuery>,
-) -> Result<impl IntoResponse, AppError> {
-    if headers.get("datastar-request").is_none() {
-        return Err(AppError::not_found(
-            "This endpoint only serves HTML fragments",
-        ));
-    }
-
-    let query = params.q.to_lowercase();
-
-    // Define all available examples
-    let all_examples = vec![
-        SearchResult {
-            title: "Active Search".to_string(),
-            description: "Search examples as you type".to_string(),
-        },
-        SearchResult {
-            title: "Hypermedia Demo".to_string(),
-            description: "Dynamic content loading with Datastar".to_string(),
-        },
-        SearchResult {
-            title: "Form Demo".to_string(),
-            description: "Form submission with hypermedia responses".to_string(),
-        },
-        SearchResult {
-            title: "Server-Side Theme Switcher".to_string(),
-            description: "Change themes with server-generated CSS variables".to_string(),
-        },
-    ];
-
-    // Filter examples based on search query
-    let results: Vec<SearchResult> = if query.is_empty() {
-        all_examples
-    } else {
-        all_examples
-            .into_iter()
-            .filter(|example| {
-                example.title.to_lowercase().contains(&query)
-                    || example.description.to_lowercase().contains(&query)
-            })
-            .collect()
-    };
-
-    let template = SearchResultsTemplate { results };
-    Ok(template.into_response())
-}
-
-// Theme switch endpoint - returns updated CSS variables via Datastar
-pub async fn switch_theme(
-    Query(params): Query<ThemeQuery>,
-    headers: HeaderMap,
-) -> Result<Response, AppError> {
-    // Only serve to Datastar requests
-    if headers.get("datastar-request").is_none() {
-        return Err(AppError::not_found(
-            "This endpoint only serves Datastar responses",
-        ));
-    }
-
-    // Parse the theme from the query parameter
-    let theme = Theme::from_str(&params.theme).unwrap_or(Theme::Light);
-    let theme_css = get_theme_variables(&theme);
-
-    // Return a style element that will be patched into the page
-    let html = format!(
-        r#"<style id="theme">
-        :root {{
-            {}
-        }}
-    </style>"#,
-        theme_css
-    );
-
-    // Build response with cookie
-    let mut response = Html(html).into_response();
-
-    // Set cookie that expires in 1 year
-    let cookie_value = format!(
-        "theme={}; Path=/; Max-Age=31536000; SameSite=Lax",
-        params.theme
-    );
-    response
-        .headers_mut()
-        .insert(header::SET_COOKIE, cookie_value.parse().unwrap());
-
-    Ok(response)
+    
+    BackendCodeTemplate {
+        example_id,
+        code,
+    }.into_response()
 }

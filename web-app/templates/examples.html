@@ -2,10 +2,19 @@
 
 {% block content %}
 <div class="examples-grid">
-    <!-- Active Search Card (First Example) -->
-    <div class="example-card" data-example-id="active-search">
-        <h3>Active Search</h3>
-        <p class="example-description">Search examples as you type</p>
+    <!-- Active Search Card (Always visible with content) -->
+    <div class="example-card active-search-card" data-example-id="active-search">
+        <div class="card-header">
+            <div>
+                <h3>Active Search</h3>
+                <p class="example-description">Search examples as you type</p>
+            </div>
+            <div class="pin-icon" title="Pinned">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"/>
+                </svg>
+            </div>
+        </div>
         <div class="example-content">
             <input 
                 type="text" 
@@ -20,75 +29,272 @@
         </div>
     </div>
 
-    <!-- Hypermedia Demo Card -->
-    <div class="example-card" data-example-id="hypermedia-demo">
-        <h3>Hypermedia Demo</h3>
-        <p class="example-description">Dynamic content loading with Datastar</p>
-        <div class="example-content">
-            <button data-on-click="@get('/examples/elements/get-items')">
-                Fetch Data
-            </button>
-            <div id="data-content">
-                <p class="message">Click the button to load data</p>
-            </div>
-        </div>
+    <!-- Generated Example Cards -->
+    {% for example in examples %}
+    {% if example.id != "active-search" %}
+    <div class="example-card clickable-card" 
+         data-example-id="{{ example.id }}"
+         data-on-click="$exampleModal = '{{ example.id }}'; document.getElementById('modal-{{ example.id }}').showModal()">
+        <h3>{{ example.title }}</h3>
+        <p class="example-description">{{ example.description }}</p>
     </div>
 
-    <!-- Form Demo Card -->
-    <div class="example-card" data-example-id="form-demo">
-        <h3>Form Demo</h3>
-        <p class="example-description">Form submission with hypermedia responses</p>
-        <div class="example-content">
-            <form data-on-submit="@post('/examples/elements/submit-form', {contentType: 'form'})">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
+    <!-- Modal for maximized view -->
+    <dialog id="modal-{{ example.id }}" class="example-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>{{ example.title }}</h2>
+                <button 
+                    class="close-btn"
+                    data-on-click="document.getElementById('modal-{{ example.id }}').close()">
+                    ✕
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button 
+                        class="tab-btn"
+                        data-on-click="$activeTab_{{ example.id }} = 'demo'"
+                        data-class-active="$activeTab_{{ example.id }} === 'demo'">
+                        Demo
+                    </button>
+                    <button 
+                        class="tab-btn"
+                        data-on-click="$activeTab_{{ example.id }} = 'frontend'"
+                        data-class-active="$activeTab_{{ example.id }} === 'frontend'">
+                        Frontend Code
+                    </button>
+                    <button 
+                        class="tab-btn"
+                        data-on-click="$activeTab_{{ example.id }} = 'backend'; @get('/examples/code/{{ example.id }}')"
+                        data-class-active="$activeTab_{{ example.id }} === 'backend'">
+                        Backend Code
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="value">Value:</label>
-                    <input type="text" id="value" name="value" required>
+                
+                <!-- Tab content -->
+                <div class="tab-content">
+                    <!-- Demo tab -->
+                    <div data-show="$activeTab_{{ example.id }} === 'demo' || !$activeTab_{{ example.id }}">
+                        <div class="example-demo">
+                            {{ example.html | safe }}
+                        </div>
+                    </div>
+                    
+                    <!-- Frontend code tab -->
+                    <div data-show="$activeTab_{{ example.id }} === 'frontend'">
+                        <pre class="code-block"><code class="language-html">{{ example.html }}</code></pre>
+                    </div>
+                    
+                    <!-- Backend code tab -->
+                    <div data-show="$activeTab_{{ example.id }} === 'backend'">
+                        <pre class="code-block">
+                            <code class="language-rust" id="backend-{{ example.id }}">Loading...</code>
+                        </pre>
+                    </div>
                 </div>
-                <button type="submit">Submit</button>
-            </form>
-            <div id="form-response">
-                <!-- Response will be displayed here -->
             </div>
         </div>
-    </div>
-
-    <!-- Theme Switcher Card -->
-    <div class="example-card" data-example-id="theme-switcher">
-        <h3>Server-Side Theme Switcher</h3>
-        <p class="example-description">Change themes with server-generated CSS variables</p>
-        <div class="example-content">
-            <div style="display: flex; flex-direction: column; gap: var(--size-3);">
-                <button 
-                    data-on-click="$theme = 'light'; localStorage.setItem('userTheme', 'light'); @get('/examples/theme/switch?theme=light')"
-                    style="padding: var(--size-3); background: var(--gray-2); color: var(--gray-12); border: var(--border-size-2) solid var(--gray-4); border-radius: var(--radius-2);">
-                    ☀️ Light Theme
-                </button>
-                <button 
-                    data-on-click="$theme = 'dark'; localStorage.setItem('userTheme', 'dark'); @get('/examples/theme/switch?theme=dark')"
-                    style="padding: var(--size-3); background: var(--gray-11); color: var(--gray-1); border: var(--border-size-2) solid var(--gray-9); border-radius: var(--radius-2);">
-                    🌙 Dark Theme
-                </button>
-                <button 
-                    data-on-click="$theme = 'dim'; localStorage.setItem('userTheme', 'dim'); @get('/examples/theme/switch?theme=dim')"
-                    style="padding: var(--size-3); background: var(--slate-11); color: var(--slate-1); border: var(--border-size-2) solid var(--slate-9); border-radius: var(--radius-2);">
-                    🌫️ Dim Theme
-                </button>
-                <button 
-                    data-on-click="$theme = 'grape'; localStorage.setItem('userTheme', 'grape'); @get('/examples/theme/switch?theme=grape')"
-                    style="padding: var(--size-3); background: var(--purple-11); color: var(--purple-1); border: var(--border-size-2) solid var(--purple-9); border-radius: var(--radius-2);">
-                    🍇 Grape Theme
-                </button>
-            </div>
-            <div style="margin-top: var(--size-4); padding: var(--size-3); background: var(--surface-2); border-radius: var(--radius-2);">
-                <p style="color: var(--text-1); margin: 0;">Current theme: <strong data-text="$theme"></strong></p>
-                <p style="color: var(--text-2); margin: 0; margin-top: var(--size-2); font-size: var(--font-size-0);">This theme is persisted and sent with every request!</p>
-            </div>
-        </div>
-    </div>
-
+    </dialog>
+    {% endif %}
+    {% endfor %}
 </div>
+
+<style>
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--size-4);
+    padding: var(--size-4);
+}
+
+.example-card {
+    background: var(--surface-2);
+    border: var(--border-size-1) solid var(--surface-3);
+    border-radius: var(--radius-3);
+    padding: var(--size-4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.clickable-card {
+    cursor: pointer;
+}
+
+.clickable-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-3);
+}
+
+.pin-icon {
+    color: var(--text-2);
+    opacity: 0.7;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.example-card h3 {
+    color: var(--text-1);
+    margin: 0 0 var(--size-2) 0;
+    font-size: var(--font-size-3);
+}
+
+.example-description {
+    color: var(--text-2);
+    margin: 0;
+    font-size: var(--font-size-1);
+}
+
+/* Modal styles */
+.example-modal {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    background: var(--surface-1);
+}
+
+.example-modal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--size-4);
+    border-bottom: var(--border-size-1) solid var(--surface-3);
+    background: var(--surface-2);
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--text-1);
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: var(--font-size-4);
+    color: var(--text-2);
+    cursor: pointer;
+    padding: var(--size-2);
+    border-radius: var(--radius-2);
+}
+
+.close-btn:hover {
+    background: var(--surface-3);
+    color: var(--text-1);
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--size-6);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: var(--size-2);
+    border-bottom: var(--border-size-1) solid var(--surface-3);
+    margin-bottom: var(--size-4);
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-2);
+    padding: var(--size-3) var(--size-4);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.tab-btn:hover {
+    color: var(--text-1);
+}
+
+.tab-btn.active {
+    color: var(--brand);
+    border-bottom-color: var(--brand);
+}
+
+.tab-content {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-content > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.example-demo {
+    padding: var(--size-4);
+    background: var(--surface-2);
+    border-radius: var(--radius-2);
+    flex: 1;
+}
+
+.code-block {
+    background: var(--surface-3);
+    padding: var(--size-4);
+    border-radius: var(--radius-2);
+    overflow: auto;
+    flex: 1;
+}
+
+.code-block code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-0);
+    color: var(--text-1);
+}
+
+/* Active search card specific styles */
+.active-search-card .example-content {
+    margin-top: var(--size-3);
+}
+
+.search-input {
+    width: 100%;
+    padding: var(--size-3);
+    background: var(--surface-1);
+    border: var(--border-size-1) solid var(--surface-3);
+    border-radius: var(--radius-2);
+    color: var(--text-1);
+    font-size: var(--font-size-1);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px var(--brand-transparent);
+}
+
+.search-results {
+    margin-top: var(--size-3);
+}
+</style>
 {% endblock %}

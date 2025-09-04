@@ -1,0 +1,1 @@
+include!("../generated/examples_data.rs");

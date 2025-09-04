@@ -9,6 +9,8 @@ use std::sync::Arc;
 use tower_http::{services::ServeDir, trace::TraceLayer};
 
 mod error;
+mod examples;
+mod examples_gen;
 mod handlers;
 mod settings;
 mod telemetry;
@@ -87,7 +89,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/examples/elements/submit-form", post(handlers::submit_form))
         .route("/examples/elements/search", get(handlers::search))
         .route("/examples/theme/switch", get(handlers::switch_theme))
-        .nest_service("/static", ServeDir::new("web-app/static"))
+        .route("/examples/code/{example_id}", get(handlers::get_example_code))
+        .nest_service("/static", ServeDir::new("static"))
         .layer(TraceLayer::new_for_http())
         .with_state(app_state);
 

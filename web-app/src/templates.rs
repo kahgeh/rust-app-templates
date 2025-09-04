@@ -31,12 +31,20 @@ pub struct ExamplesTemplate {
     pub title: String,
     pub environment: String,
     pub theme_css: String,
+    pub examples: Vec<crate::examples_gen::ExampleData>,
 }
 
 #[derive(Template)]
 #[template(path = "fragments/search_results.html")]
 pub struct SearchResultsTemplate {
     pub results: Vec<SearchResult>,
+}
+
+#[derive(Template)]
+#[template(path = "fragments/backend_code.html")]
+pub struct BackendCodeTemplate {
+    pub example_id: String,
+    pub code: String,
 }
 
 impl IntoResponse for IndexTemplate {
@@ -104,6 +112,22 @@ impl IntoResponse for ExamplesTemplate {
 }
 
 impl IntoResponse for SearchResultsTemplate {
+    fn into_response(self) -> Response {
+        match self.render() {
+            Ok(html) => Html(html).into_response(),
+            Err(err) => {
+                tracing::error!("Template rendering error: {}", err);
+                (
+                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                    "Internal Server Error",
+                )
+                    .into_response()
+            }
+        }
+    }
+}
+
+impl IntoResponse for BackendCodeTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),
