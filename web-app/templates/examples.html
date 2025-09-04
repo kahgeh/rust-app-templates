@@ -32,47 +32,73 @@
     <!-- Generated Example Cards -->
     {% for example in examples %}
     {% if example.id != "active-search" %}
-    <div class="example-card clickable-card" 
-         data-example-id="{{ example.id }}"
-         data-on-click="$exampleModal = '{{ example.id }}'; document.getElementById('modal-{{ example.id }}').showModal(); @get('/examples/code/{{ example.id }}')">
-        <h3>{{ example.title }}</h3>
-        <p class="example-description">{{ example.description }}</p>
-    </div>
-
-    <!-- Modal for maximized view -->
-    <dialog id="modal-{{ example.id }}" class="example-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>{{ example.title }}</h2>
-                <button 
-                    class="close-btn"
-                    data-on-click="document.getElementById('modal-{{ example.id }}').close()">
-                    ✕
-                </button>
+    <!-- Grid cell wrapper that maintains position -->
+    <div class="example-card-wrapper">
+        <div class="example-card clickable-card" 
+             data-example-id="{{ example.id }}"
+             data-class-flipping="$activeCardId === '{{ example.id }}'"
+             data-on-click="
+               const rect = evt.currentTarget.getBoundingClientRect();
+               $activeCardRect = {
+                 top: rect.top,
+                 left: rect.left,
+                 width: rect.width,
+                 height: rect.height
+               };
+               $activeCardId = '{{ example.id }}';
+               $isFlipping = true;
+               @get('/examples/code/{{ example.id }}');
+             "
+             data-style-position="$activeCardId === '{{ example.id }}' ? 'fixed' : ''"
+             data-style-top="$activeCardId === '{{ example.id }}' ? $activeCardRect.top + 'px' : ''"
+             data-style-left="$activeCardId === '{{ example.id }}' ? $activeCardRect.left + 'px' : ''"
+             data-style-width="$activeCardId === '{{ example.id }}' ? $activeCardRect.width + 'px' : ''"
+             data-style-height="$activeCardId === '{{ example.id }}' ? $activeCardRect.height + 'px' : ''"
+             data-style-z-index="$activeCardId === '{{ example.id }}' ? '1000' : ''"
+             data-style-overflow="$activeCardId === '{{ example.id }}' ? 'visible' : ''">
+        <div class="card-flipper">
+            <div class="card-front">
+                <h3>{{ example.title }}</h3>
+                <p class="example-description">{{ example.description }}</p>
             </div>
-            
-            <div class="modal-body">
-                <!-- Demo section at the top -->
-                <div class="demo-section">
-                    <div class="example-demo">
-                        {{ example.html | safe }}
+            <div class="card-back">
+                <!-- This will contain the modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>{{ example.title }}</h2>
+                        <button 
+                            class="close-btn"
+                            data-on-click__stop="$activeCardId = ''; $isFlipping = false; $activeCardRect = {top: 0, left: 0, width: 0, height: 0}">
+                            ✕
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <!-- Demo section at the top -->
+                        <div class="demo-section">
+                            <div class="example-demo">
+                                {{ example.html | safe }}
+                            </div>
+                        </div>
+                        
+                        <!-- Code blocks side by side -->
+                        <div class="code-blocks-container">
+                            <pre>
+                                <div class="code-header">Frontend Code</div>
+                                <code class="language-html">{{ example.highlighted_html|safe }}</code>
+                            </pre>
+                            <pre>
+                                <div class="code-header">Backend Code</div>
+                                <code class="language-rust" id="backend-{{ example.id }}">Loading...</code>
+                            </pre>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Code blocks side by side -->
-                <div class="code-blocks-container">
-                    <pre>
-                        <div class="code-header">Frontend Code</div>
-                        <code class="language-html">{{ example.highlighted_html|safe }}</code>
-                    </pre>
-                    <pre>
-                        <div class="code-header">Backend Code</div>
-                        <code class="language-rust" id="backend-{{ example.id }}">Loading...</code>
-                    </pre>
-                </div>
+            </div>
             </div>
         </div>
-    </dialog>
+    </div> <!-- End of example-card-wrapper -->
+
     {% endif %}
     {% endfor %}
 </div>
@@ -91,18 +117,22 @@
 }
 
 .example-card {
-    background: var(--surface-2);
-    border: var(--border-size-1) solid var(--surface-3);
-    border-radius: var(--radius-3);
-    padding: var(--size-4);
+    position: relative;
+    min-height: 150px;
     transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    height: 100%;
+}
+
+.example-card.flipping {
+    perspective: 1000px;
 }
 
 .clickable-card {
     cursor: pointer;
 }
 
-.clickable-card:hover {
+.clickable-card:hover .card-front {
     transform: translateY(-2px);
     box-shadow: var(--shadow-3);
 }
@@ -126,32 +156,24 @@
 
 .example-description {
     color: var(--text-2);
-    margin: 0;
     font-size: var(--font-size-1);
+    margin: 0 0 var(--size-4) 0;
 }
 
-/* Modal styles */
-.example-modal {
-    width: 100vw;
-    height: 100vh;
-    max-width: 100vw;
-    max-height: 100vh;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    margin: 0;
-    background: var(--surface-1);
+.example-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.example-modal::backdrop {
-    background: rgba(0, 0, 0, 0.5);
-}
+/* Modal styles - REMOVED: No longer using dialog element */
 
+/* Modal content is now in card-back */
 .modal-content {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
 }
 
 .modal-header {
@@ -212,7 +234,7 @@
 /* Code blocks container */
 .code-blocks-container {
     display: flex;
-    gap: 1rem;
+    gap: var(--size-3);
     width: 100%;
 }
 
@@ -221,7 +243,7 @@
     flex: 1 1 50%;
     margin: 0;
     background: var(--surface-2);
-    border: var(--border-size-1) solid #333333;
+    border: var(--border-size-1) solid var(--surface-3);
     border-radius: 6px;
     overflow: hidden;
     display: flex;
@@ -232,11 +254,11 @@
 
 /* Header inside pre */
 .code-header {
-    padding: 0.75rem 1rem;
+    padding: var(--size-2) var(--size-3);
     background: var(--surface-3);
-    border-bottom: 1px solid #333333;
-    font-weight: 600;
-    font-size: 14px;
+    border-bottom: var(--border-size-1) solid var(--surface-4);
+    font-weight: var(--font-weight-6);
+    font-size: var(--font-size-1);
     flex-shrink: 0;
 }
 
@@ -244,17 +266,24 @@
 .code-blocks-container pre code {
     flex: 1;
     display: block;
-    padding: 1rem;
-    color: #ffffff;
+    padding: var(--size-3);
+    color: var(--text-1);
     font-family: var(--font-mono);
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: var(--font-size-1);
+    line-height: var(--font-lineheight-3);
     overflow-x: auto;
     overflow-y: auto;
     white-space: pre;
 }
 
 /* Active search card specific styles */
+.active-search-card {
+    background: var(--surface-2);
+    border: var(--border-size-1) solid var(--surface-3);
+    border-radius: var(--radius-3);
+    padding: var(--size-4);
+}
+
 .active-search-card .example-content {
     margin-top: var(--size-3);
 }
@@ -278,6 +307,58 @@
 .search-results {
     margin-top: var(--size-3);
 }
+
+/* Phase 1: 3D Flip Animation Foundation */
+.card-flipper {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.card-front {
+    z-index: 2;
+    background: var(--surface-2);
+    padding: var(--size-4);
+    border-radius: var(--radius-3);
+    border: var(--border-size-1) solid var(--surface-3);
+    box-sizing: border-box;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    background: var(--surface-1);
+    border-radius: var(--radius-3);
+}
+
+/* When card is flipping/flipped */
+.example-card.flipping .card-flipper {
+    transform: rotateY(180deg);
+}
+
+/* Phase 2: Position Capture & Grid Escape */
+/* Position and dimensions are applied via data-style inline styles */
+
+/* Grid wrapper to maintain layout */
+.example-card-wrapper {
+    min-height: 150px; /* Match typical card height */
+    position: relative;
+}
+
+/* Card-back modal content inherits from .modal-content above */
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
