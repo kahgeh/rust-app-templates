@@ -1,4 +1,5 @@
 use crate::{
+    syntax_highlight::highlight_code,
     templates::{BackendCodeTemplate, ExamplesTemplate, IndexTemplate},
     theme::{get_theme_variables, Theme},
     AppState,
@@ -51,8 +52,16 @@ pub async fn examples(State(state): State<AppState>, headers: HeaderMap) -> Exam
     let theme = extract_theme_from_headers(&headers);
     let theme_css = get_theme_variables(&theme);
     
-    // Get generated examples data
-    let examples = crate::examples_gen::get_examples();
+    // Get generated examples data and add syntax highlighting
+    let mut examples = crate::examples_gen::get_examples();
+    for example in &mut examples {
+        // Apply syntax highlighting to HTML code
+        if let Ok(highlighted) = highlight_code(&example.html, "html") {
+            example.highlighted_html = highlighted;
+        } else {
+            example.highlighted_html = example.html.clone();
+        }
+    }
 
     ExamplesTemplate {
         title: state.settings.application.name.clone(),
@@ -74,7 +83,7 @@ pub async fn get_example_code(Path(example_id): Path<String>, headers: HeaderMap
     
     let file_path = format!("src/examples/{}.rs", example_id.replace('-', "_"));
     
-    let code = match fs::read_to_string(&file_path) {
+    let raw_code = match fs::read_to_string(&file_path) {
         Ok(content) => {
             // Filter out the metadata comment lines
             content
@@ -102,6 +111,9 @@ pub async fn get_example_code(Path(example_id): Path<String>, headers: HeaderMap
             }
         }
     };
+    
+    // Apply syntax highlighting
+    let code = highlight_code(&raw_code, "rust").unwrap_or(raw_code);
     
     BackendCodeTemplate {
         example_id,

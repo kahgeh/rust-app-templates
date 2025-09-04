@@ -13,6 +13,7 @@ mod examples;
 mod examples_gen;
 mod handlers;
 mod settings;
+mod syntax_highlight;
 mod telemetry;
 mod templates;
 mod theme;

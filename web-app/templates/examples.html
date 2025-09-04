@@ -85,7 +85,7 @@
                     
                     <!-- Frontend code tab -->
                     <div data-show="$activeTab_{{ example.id }} === 'frontend'">
-                        <pre class="code-block"><code class="language-html">{{ example.html }}</code></pre>
+                        <pre class="code-block"><code class="language-html">{{ example.highlighted_html|safe }}</code></pre>
                     </div>
                     
                     <!-- Backend code tab -->

@@ -42,5 +42,8 @@ tracing-opentelemetry = { workspace = true }
 # YAML parsing
 serde_yaml_ng = "0.10.0"
 
+# Syntax highlighting
+inkjet = { version = "0.10.5", features = ["html"] }
+
 [build-dependencies]
 serde_yaml_ng = "0.10.0"

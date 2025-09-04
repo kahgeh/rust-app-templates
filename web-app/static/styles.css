@@ -407,3 +407,116 @@ ul {
         padding: var(--size-4);
     }
 }
+
+/* Syntax highlighting styles for inkjet */
+.code-block {
+    background: var(--surface-2);
+    border-radius: var(--radius-2);
+    padding: var(--size-4);
+    overflow-x: auto;
+    margin-block: var(--size-3);
+}
+
+.code-block code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-0);
+    line-height: var(--font-lineheight-5);
+}
+
+/* Inkjet token styles - adapt to light/dark theme */
+.code-block .keyword {
+    color: var(--purple-5);
+    font-weight: var(--font-weight-6);
+}
+
+.code-block .string {
+    color: var(--green-6);
+}
+
+.code-block .number {
+    color: var(--orange-6);
+}
+
+.code-block .comment {
+    color: var(--text-2);
+    font-style: italic;
+}
+
+.code-block .function {
+    color: var(--blue-6);
+}
+
+.code-block .type {
+    color: var(--cyan-6);
+}
+
+.code-block .operator {
+    color: var(--text-1);
+}
+
+.code-block .punctuation {
+    color: var(--text-2);
+}
+
+.code-block .variable {
+    color: var(--indigo-6);
+}
+
+.code-block .constant {
+    color: var(--pink-6);
+}
+
+.code-block .tag {
+    color: var(--red-6);
+}
+
+.code-block .attribute {
+    color: var(--orange-6);
+}
+
+.code-block .namespace {
+    color: var(--teal-6);
+}
+
+/* Dark theme adjustments for syntax highlighting */
+@media (prefers-color-scheme: dark) {
+    .code-block .keyword {
+        color: var(--purple-4);
+    }
+    
+    .code-block .string {
+        color: var(--green-4);
+    }
+    
+    .code-block .number {
+        color: var(--orange-4);
+    }
+    
+    .code-block .function {
+        color: var(--blue-4);
+    }
+    
+    .code-block .type {
+        color: var(--cyan-4);
+    }
+    
+    .code-block .variable {
+        color: var(--indigo-4);
+    }
+    
+    .code-block .constant {
+        color: var(--pink-4);
+    }
+    
+    .code-block .tag {
+        color: var(--red-4);
+    }
+    
+    .code-block .attribute {
+        color: var(--orange-4);
+    }
+    
+    .code-block .namespace {
+        color: var(--teal-4);
+    }
+}
