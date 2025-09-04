@@ -123,25 +123,27 @@ pub fn get_syntax_highlighting_variables(theme: &Theme) -> String {
     match theme {
         Theme::Light => {
             r#"
-  /* Light theme syntax highlighting */
-  --token-keyword: var(--purple-5);
-  --token-string: var(--green-6);
-  --token-number: var(--orange-6);
-  --token-comment: var(--text-2);
-  --token-function: var(--blue-6);
-  --token-type: var(--cyan-6);
-  --token-operator: var(--text-1);
-  --token-punctuation: var(--text-2);
-  --token-variable: var(--indigo-6);
-  --token-constant: var(--pink-6);
-  --token-tag: var(--red-6);
-  --token-attribute: var(--orange-6);
-  --token-namespace: var(--teal-6);
+  /* Light theme syntax highlighting - GitHub Light theme for WCAG AA compliance */
+  --token-text: var(--gray-12);       /* #24292f - plain text in code */
+  --token-keyword: var(--red-6);      /* #cf222e - keywords */
+  --token-string: var(--blue-9);      /* #0a3069 - strings */
+  --token-number: var(--orange-7);    /* #953800 - numbers */
+  --token-comment: var(--gray-7);     /* #57606a - comments */
+  --token-function: var(--purple-7);  /* #8250df - functions */
+  --token-type: var(--orange-7);      /* #953800 - types */
+  --token-operator: var(--gray-12);   /* #24292f - operators */
+  --token-punctuation: var(--gray-7); /* #57606a - punctuation */
+  --token-variable: var(--gray-12);   /* #24292f - variables */
+  --token-constant: var(--blue-7);    /* #0550ae - constants */
+  --token-tag: var(--red-6);          /* #cf222e - HTML/JSX tags */
+  --token-attribute: var(--blue-7);   /* #0550ae - attributes */
+  --token-namespace: var(--purple-7); /* #8250df - namespaces */
             "#
         }
         Theme::Dark => {
             r#"
   /* Dark theme syntax highlighting */
+  --token-text: var(--gray-1);        /* plain text in code */
   --token-keyword: var(--pink-3);
   --token-string: var(--green-3);
   --token-number: var(--orange-3);
@@ -160,6 +162,7 @@ pub fn get_syntax_highlighting_variables(theme: &Theme) -> String {
         Theme::Dim => {
             r#"
   /* Dim theme syntax highlighting */
+  --token-text: var(--gray-3);        /* plain text in code */
   --token-keyword: var(--purple-4);
   --token-string: var(--green-4);
   --token-number: var(--orange-4);
@@ -178,6 +181,7 @@ pub fn get_syntax_highlighting_variables(theme: &Theme) -> String {
         Theme::Grape => {
             r#"
   /* Grape theme syntax highlighting */
+  --token-text: var(--purple-1);      /* plain text in code */
   --token-keyword: var(--purple-3);
   --token-string: var(--green-3);
   --token-number: var(--orange-3);

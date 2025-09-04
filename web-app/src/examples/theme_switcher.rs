@@ -47,7 +47,7 @@
 
 use crate::{
     error::AppError,
-    theme::{get_theme_variables, Theme},
+    theme::{get_syntax_highlighting_variables, get_theme_variables, Theme},
 };
 use axum::{
     extract::Query,
@@ -73,14 +73,21 @@ pub async fn switch_theme(
 
     let theme = Theme::from_str(&params.theme).unwrap_or(Theme::Light);
     let theme_css = get_theme_variables(&theme);
+    let syntax_css = get_syntax_highlighting_variables(&theme);
 
     let html = format!(
         r#"<style id="theme">
         :root {{
             {}
         }}
+    </style>
+    <style id="syntax-highlighting">
+        :root {{
+            {}
+        }}
     </style>"#,
-        theme_css
+        theme_css,
+        syntax_css
     );
 
     let mut response = Html(html).into_response();

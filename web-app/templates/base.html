@@ -7,18 +7,9 @@
     <link rel="stylesheet" href="https://unpkg.com/open-props">
     <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css">
     <link rel="stylesheet" href="/static/styles.css">
-    
-    <!-- Server-generated theme variables -->
     <style id="theme">
         :root {
             {{ theme_css | safe }}
-        }
-    </style>
-    
-    <!-- Server-generated syntax highlighting variables -->
-    <style id="syntax-highlighting">
-        :root {
-            {{ syntax_css | safe }}
         }
     </style>
 </head>
