@@ -102,12 +102,6 @@ body>header>nav {
     padding: var(--size-fluid-3);
     box-shadow: var(--shadow-2);
     border: var(--border-size-1) solid var(--surface-2);
-    transition: transform var(--animation-fade-in), box-shadow var(--animation-fade-in);
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-4);
 }
 
 /* Example card styles */
