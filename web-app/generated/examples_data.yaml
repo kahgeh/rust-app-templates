@@ -18,27 +18,43 @@ examples:
     title: "Server-Side Theme Switcher"
     description: "Change themes with server-generated CSS variables"
     html: |
-      <div style="display: flex; flex-direction: column; gap: var(--size-3);">
-      <button
+      <div style="display: flex; flex-wrap: wrap; gap: var(--size-3); align-items: center;">
+      <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
+      <input
+      type="radio"
+      name="theme"
+      value="light"
       data-on-click="$theme = 'light'; @get('/examples/theme/switch?theme=light')"
-      style="padding: var(--size-3); background: var(--gray-2); color: var(--gray-12); border: var(--border-size-2) solid var(--gray-4); border-radius: var(--radius-2);">
-      ☀️ Light Theme
-      </button>
-      <button
+      data-attr-checked="$theme === 'light'">
+      <span>☀️ Light</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
+      <input
+      type="radio"
+      name="theme"
+      value="dark"
       data-on-click="$theme = 'dark'; @get('/examples/theme/switch?theme=dark')"
-      style="padding: var(--size-3); background: var(--gray-11); color: var(--gray-1); border: var(--border-size-2) solid var(--gray-9); border-radius: var(--radius-2);">
-      🌙 Dark Theme
-      </button>
-      <button
+      data-attr-checked="$theme === 'dark'">
+      <span>🌙 Dark</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
+      <input
+      type="radio"
+      name="theme"
+      value="dim"
       data-on-click="$theme = 'dim'; @get('/examples/theme/switch?theme=dim')"
-      style="padding: var(--size-3); background: var(--slate-11); color: var(--slate-1); border: var(--border-size-2) solid var(--slate-9); border-radius: var(--radius-2);">
-      🌫️ Dim Theme
-      </button>
-      <button
+      data-attr-checked="$theme === 'dim'">
+      <span>🌫️ Dim</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
+      <input
+      type="radio"
+      name="theme"
+      value="grape"
       data-on-click="$theme = 'grape'; @get('/examples/theme/switch?theme=grape')"
-      style="padding: var(--size-3); background: var(--purple-11); color: var(--purple-1); border: var(--border-size-2) solid var(--purple-9); border-radius: var(--radius-2);">
-      🍇 Grape Theme
-      </button>
+      data-attr-checked="$theme === 'grape'">
+      <span>🍇 Grape</span>
+      </label>
       </div>
       <div style="margin-top: var(--size-4); padding: var(--size-3); background: var(--surface-2); border-radius: var(--radius-2);">
       <p style="color: var(--text-1); margin: 0;">Current theme: <strong data-text="$theme"></strong></p>
