@@ -113,20 +113,23 @@ data-signals-closing="false"
 
 #### 2. Closing Animation Logic (examples.html:72-82)
 ```javascript
-data-on-click__stop="
-  $closing = true;
-  setTimeout(() => {
+// Close button - simplified to just set closing flag
+data-on-click__stop="$closing = true"
+
+// Animation end handler - cleanly resets state after animation completes
+data-on-animationend="
+  if ($closing && $activeCardId === '{{ example.id }}') {
     $activeCardId = '';
     $isFlipping = false;
     $closing = false;
     $activeCardRect = {top: 0, left: 0, width: 0, height: 0};
-  }, 600);
+  }
 "
 ```
 **Purpose:** 
 - Set closing flag to trigger reverse animation
-- Wait 600ms (animation duration) before resetting state
-- Ensures smooth animation completion before cleanup
+- Use native animationend event for state cleanup
+- Event-driven approach eliminates timing synchronization issues
 
 #### 3. Transform Reset (examples.html:56)
 ```html
@@ -247,7 +250,7 @@ Complete the transformation by expanding cards to full viewport size, creating a
    - **Move:** Modal slides from center back to original grid position
    - **Contract:** Modal shrinks from 100vw × 100vh to original card size
 4. **Card returns** to exact grid position
-5. **State cleanup** after animation completes
+5. **State cleanup** triggered by animationend event (no hardcoded timing)
 
 ## Key Technical Insights
 
@@ -262,7 +265,7 @@ Complete the transformation by expanding cards to full viewport size, creating a
 - **evt.currentTarget** not `event.target` - Ensures correct element reference in Datastar
 - **__stop modifier** not `.stop` - Correct Datastar syntax for stopPropagation
 - **z-index: 9999** - Ensures modal appears above all page content
-- **600ms timeout** - Matches CSS animation duration for proper cleanup
+- **animationend event** - Replaces fragile timeout for robust state cleanup
 - **transform: none** reset - Prevents transform conflicts during animation
 
 ### Performance Optimizations
