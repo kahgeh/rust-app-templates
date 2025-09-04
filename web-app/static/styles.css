@@ -423,58 +423,58 @@ ul {
     line-height: var(--font-lineheight-5);
 }
 
-/* Inkjet token styles for dark/black background */
-.code-block-dark .keyword {
+/* Inkjet token styles for code blocks in examples modal (dark background) */
+.code-blocks-container .keyword {
     color: #ff79c6;
     font-weight: var(--font-weight-6);
 }
 
-.code-block-dark .string {
+.code-blocks-container .string {
     color: #50fa7b;
 }
 
-.code-block-dark .number {
+.code-blocks-container .number {
     color: #ffb86c;
 }
 
-.code-block-dark .comment {
+.code-blocks-container .comment {
     color: #6272a4;
     font-style: italic;
 }
 
-.code-block-dark .function {
+.code-blocks-container .function {
     color: #8be9fd;
 }
 
-.code-block-dark .type {
+.code-blocks-container .type {
     color: #66d9ef;
 }
 
-.code-block-dark .operator {
+.code-blocks-container .operator {
     color: #f8f8f2;
 }
 
-.code-block-dark .punctuation {
+.code-blocks-container .punctuation {
     color: #f8f8f2;
 }
 
-.code-block-dark .variable {
+.code-blocks-container .variable {
     color: #bd93f9;
 }
 
-.code-block-dark .constant {
+.code-blocks-container .constant {
     color: #ff79c6;
 }
 
-.code-block-dark .tag {
+.code-blocks-container .tag {
     color: #ff5555;
 }
 
-.code-block-dark .attribute {
+.code-blocks-container .attribute {
     color: #ffb86c;
 }
 
-.code-block-dark .namespace {
+.code-blocks-container .namespace {
     color: #50fa7b;
 }
 
