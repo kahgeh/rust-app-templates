@@ -77,7 +77,7 @@ pub fn get_theme_variables(theme: &Theme) -> String {
   
   /* Surface colors */
   --surface-1: var(--gray-8);
-  --surface-2: var(--gray-9);  /* Darker background for code blocks */
+  --surface-2: var(--gray-7);  /* Maintains descending pattern: 8, 7, 6, 5 */
   --surface-3: var(--gray-6);
   --surface-4: var(--gray-5);
   
@@ -161,7 +161,7 @@ pub fn get_syntax_highlighting_variables(theme: &Theme) -> String {
         }
         Theme::Dim => {
             r#"
-  /* Dim theme syntax highlighting - muted but with good contrast against dark background */
+  /* Dim theme syntax highlighting - balanced contrast for gray-7 background */
   --token-text: var(--gray-5);        /* plain text - lighter gray for contrast */
   --token-keyword: var(--purple-5);   /* keywords - muted purple */
   --token-string: var(--green-5);     /* strings - muted green */
