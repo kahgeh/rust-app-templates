@@ -64,7 +64,7 @@ body>header>nav {
 
 .examples-link:hover {
     background: var(--surface-3);
-    transform: translateY(-2px);
+    transform: translateY(calc(var(--size-1) * -1));
     box-shadow: var(--shadow-4);
 }
 
@@ -77,7 +77,7 @@ body>header>nav {
 /* Grid layout */
 .content-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--size-content-2), 1fr));
     gap: var(--size-fluid-3);
     margin-top: var(--size-fluid-3);
 }
@@ -122,7 +122,7 @@ body>header>nav {
 .search-input:focus {
     outline: none;
     border-color: var(--surface-4);
-    box-shadow: 0 0 0 3px var(--surface-3);
+    box-shadow: 0 0 0 var(--size-1) var(--surface-3);
 }
 
 .search-results {
@@ -259,7 +259,7 @@ input:focus,
 textarea:focus {
     outline: none;
     border-color: var(--surface-4);
-    box-shadow: 0 0 0 3px var(--surface-3);
+    box-shadow: 0 0 0 var(--size-1) var(--surface-3);
 }
 
 /* Response message with Open Props */
@@ -341,7 +341,7 @@ ul {
    These automatically adapt based on the server-generated theme */
 
 /* Responsive design with Open Props */
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
     .container {
         padding: var(--size-3);
     }
