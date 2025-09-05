@@ -10,18 +10,53 @@ body {
     min-height: 100vh;
 }
 
-body>header>nav {
+/* Header and nav styles - same surface as main content */
+body > header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    padding: var(--size-4);
+}
+
+body > header > nav {
     display: flex;
+    justify-content: flex-end;
+}
+
+/* Home icon styles */
+.home-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size-9);
+    height: var(--size-9);
+    padding: var(--size-3);
+    background: var(--surface-2);
+    color: var(--text-1);
+    border-radius: var(--radius-round);
+    box-shadow: var(--shadow-2);
+    transition: all var(--animation-fade-in);
+    text-decoration: none;
+}
+
+.home-icon-link:hover {
     background: var(--surface-3);
-    padding: var(--size-3) var(--size-6);
-    box-shadow: var(--shadow-1);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-3);
+}
+
+.home-icon-link svg {
+    width: var(--size-5);
+    height: var(--size-5);
 }
 
 /* Index page styles */
 .index-page-container {
     max-width: calc(var(--size-15) * 2);
     margin-inline: auto;
-    padding: var(--size-8);
+    padding: var(--size-6);
+    padding-top: calc(var(--size-10) + var(--size-6)); /* Account for fixed header icon */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -91,7 +126,8 @@ body>header>nav {
     width: 100%;
     max-width: calc(var(--size-15) * 4);
     margin-inline: auto;
-    margin-block: var(--size-8);
+    margin-block-start: 0;
+    margin-block-end: var(--size-8);
     padding-inline: var(--size-8);
 }
 

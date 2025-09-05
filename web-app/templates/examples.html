@@ -125,7 +125,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--size-content-2), 1fr));
     gap: var(--size-4);
-    padding: var(--size-4);
+    padding: var(--size-6);
+    padding-top: calc(var(--size-10) + var(--size-6)); /* Account for fixed header icon */
 }
 
 .example-card {
@@ -373,13 +374,13 @@
 /* Animation to move card to center while maintaining flip */
 .example-card.flipping {
     animation: expand-to-viewport 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
-    z-index: 9999 !important;
+    z-index: var(--layer-important);
 }
 
 /* Animation for closing - reverses the center animation */
 .example-card.closing {
     animation: contract-from-viewport 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
-    z-index: 9999 !important;
+    z-index: var(--layer-important);
 }
 
 /* When closing, flip back */

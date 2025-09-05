@@ -21,8 +21,14 @@
     <!-- Global Datastar signals that persist across all pages -->
     <header>
         <nav>
-            <a href="/" style="font-size: var(--font-size-4); font-weight: bold; color: var(--text-1); text-decoration: none;">Rust Web Starter</a>
+            <a href="/" class="home-icon-link" aria-label="Home">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </a>
         </nav>
+    </header>
+    
     <div>
     
     {% block content %}{% endblock %}
