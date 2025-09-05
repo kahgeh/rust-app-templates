@@ -2,117 +2,23 @@
 
 {% block content %}
 <div class="examples-grid">
-    <!-- Active Search Card (Always visible with content) -->
-    <div class="example-card active-search-card" data-example-id="active-search">
-        <div class="card-header">
-            <div>
-                <h3>Active Search</h3>
-                <p class="example-description">Search examples as you type</p>
-            </div>
-            <div class="pin-icon" title="Pinned">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"/>
-                </svg>
-            </div>
-        </div>
-        <div class="example-content">
-            <input 
-                type="text" 
-                placeholder="Search examples..." 
-                data-model="search"
-                data-on-input="@get('/examples/elements/search?q=' + encodeURIComponent(search))"
-                class="search-input"
-            >
-            <div id="search-results" class="search-results">
-                <!-- Search results will appear here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Generated Example Cards -->
+    <!-- Active Search Card (always visible) -->
     {% for example in examples %}
-    {% if example.id != "active-search" %}
-    <!-- Grid cell wrapper that maintains position -->
-    <div class="example-card-wrapper">
-        <div class="example-card clickable-card" 
-             data-example-id="{{ example.id }}"
-             data-class-flipping="$activeCardId === '{{ example.id }}' && !$closing"
-             data-class-closing="$activeCardId === '{{ example.id }}' && $closing"
-             data-on-click="
-               if ($activeCardId === '') {
-                 const rect = evt.currentTarget.getBoundingClientRect();
-                 $activeCardRect = {
-                   top: rect.top,
-                   left: rect.left,
-                   width: rect.width,
-                   height: rect.height
-                 };
-                 $activeCardId = '{{ example.id }}';
-                 $isFlipping = true;
-                 @get('/examples/code/{{ example.id }}');
-               }
-             "
-             data-on-animationend="
-               if ($closing && $activeCardId === '{{ example.id }}') {
-                 $activeCardId = '';
-                 $isFlipping = false;
-                 $closing = false;
-                 $activeCardRect = {top: 0, left: 0, width: 0, height: 0};
-               }
-             "
-             data-style-position="$activeCardId === '{{ example.id }}' ? 'fixed' : ''"
-             data-style-top="$activeCardId === '{{ example.id }}' ? $activeCardRect.top + 'px' : ''"
-             data-style-left="$activeCardId === '{{ example.id }}' ? $activeCardRect.left + 'px' : ''"
-             data-style-transform="$activeCardId === '{{ example.id }}' ? 'none' : ''"
-             data-style-width="$activeCardId === '{{ example.id }}' ? $activeCardRect.width + 'px' : ''"
-             data-style-height="$activeCardId === '{{ example.id }}' ? $activeCardRect.height + 'px' : ''"
-             data-style-z-index="$activeCardId === '{{ example.id }}' ? '9999' : ''"
-             data-style-overflow="$activeCardId === '{{ example.id }}' ? 'visible' : ''">
-        <div class="card-flipper">
-            <div class="card-front">
-                <h3>{{ example.title }}</h3>
-                <p class="example-description">{{ example.description }}</p>
-            </div>
-            <div class="card-back">
-                <!-- This will contain the modal content -->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>{{ example.title }}</h2>
-                        <button 
-                            class="close-btn"
-                            data-on-click__stop="$closing = true">
-                            ✕
-                        </button>
-                    </div>
-                    
-                    <div class="modal-body">
-                        <!-- Demo section at the top -->
-                        <div class="demo-section">
-                            <div class="example-demo">
-                                {{ example.html | safe }}
-                            </div>
-                        </div>
-                        
-                        <!-- Code blocks side by side -->
-                        <div class="code-blocks-container">
-                            <pre>
-                                <div class="code-header">Frontend Code</div>
-                                <code class="language-html">{{ example.highlighted_html|safe }}</code>
-                            </pre>
-                            <pre>
-                                <div class="code-header">Backend Code</div>
-                                <code class="language-rust" id="backend-{{ example.id }}">Loading...</code>
-                            </pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div> <!-- End of example-card-wrapper -->
-
+    {% if example.id == "active-search" %}
+    {% include "fragments/example_card.html" %}
     {% endif %}
     {% endfor %}
+    
+    <!-- Other Example Cards (replaceable during search) -->
+    <div id="example-cards-container">
+        <div id="example-cards">
+        {% for example in examples %}
+        {% if example.id != "active-search" %}
+        {% include "fragments/example_card.html" %}
+        {% endif %}
+        {% endfor %}
+        </div>
+    </div> <!-- End of example-cards-container -->
 </div>
 
 <style id="syntax-highlighting">
@@ -128,6 +34,14 @@
     gap: var(--size-4);
     padding: var(--size-6);
     padding-top: calc(var(--size-10) + var(--size-6)); /* Account for fixed header icon */
+}
+
+#example-cards-container {
+    display: contents; /* Allow container to be transparent to grid */
+}
+
+#example-cards {
+    display: contents; /* Allow children to participate in parent grid */
 }
 
 .example-card {
@@ -230,7 +144,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--size-4);
-    min-height: 0;
 }
 
 /* Demo section */
@@ -293,20 +206,6 @@
     white-space: pre;
 }
 
-/* Active search card specific styles */
-.active-search-card {
-    background: var(--surface-2);
-    border: var(--border-size-1) solid var(--surface-3);
-    border-radius: var(--radius-3);
-    padding: var(--size-4);
-    height: var(--size-14); /* Match height with other cards */
-    display: flex;
-    flex-direction: column;
-}
-
-.active-search-card .example-content {
-    margin-top: var(--size-3);
-}
 
 .search-input {
     width: 100%;

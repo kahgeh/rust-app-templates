@@ -52,6 +52,12 @@ pub struct SearchResultsTemplate {
 }
 
 #[derive(Template)]
+#[template(path = "fragments/example_search_results.html")]
+pub struct ExampleSearchResultsTemplate {
+    pub examples: Vec<ExampleWithHighlight>,
+}
+
+#[derive(Template)]
 #[template(path = "fragments/backend_code.html")]
 pub struct BackendCodeTemplate {
     pub example_id: String,
@@ -139,6 +145,22 @@ impl IntoResponse for SearchResultsTemplate {
 }
 
 impl IntoResponse for BackendCodeTemplate {
+    fn into_response(self) -> Response {
+        match self.render() {
+            Ok(html) => Html(html).into_response(),
+            Err(err) => {
+                tracing::error!("Template rendering error: {}", err);
+                (
+                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                    "Internal Server Error",
+                )
+                    .into_response()
+            }
+        }
+    }
+}
+
+impl IntoResponse for ExampleSearchResultsTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),

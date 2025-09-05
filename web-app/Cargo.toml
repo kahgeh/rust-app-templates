@@ -17,6 +17,7 @@ askama_web = { version = "0.14", features = ["axum-0.8"] }
 
 # Hypermedia
 datastar = { version = "0.3", features = ["axum"] }
+async-stream = "0.3"
 
 # Configuration
 config = { version = "0.15", features = ["toml"] }

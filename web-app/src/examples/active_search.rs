@@ -4,26 +4,39 @@
 //! <input 
 //!     type="text" 
 //!     placeholder="Search examples..." 
-//!     data-model="search"
-//!     data-on-input="@get('/examples/elements/search?q=' + encodeURIComponent(search))"
+//!     data-bind-search
+//!     data-on-input__debounce.200ms="@get('/examples/search')"
 //!     class="search-input"
 //! >
-//! <div id="search-results" class="search-results">
-//!     <!-- Search results will appear here -->
-//! </div>
+//! <!-- Search results replace the contents of #example-cards-container -->
 //! @html_end
 
-use crate::{error::AppError, templates::SearchResultsTemplate};
+use crate::{error::AppError, templates::ExampleSearchResultsTemplate, syntax_highlight::highlight_code};
+use askama::Template;
 use axum::{
     extract::{Query, State},
     http::HeaderMap,
-    response::IntoResponse,
+    response::{IntoResponse, Sse},
 };
 use serde::Deserialize;
+use serde_json::Value;
+use datastar::prelude::*;
+use async_stream::stream;
+use core::convert::Infallible;
 
-#[derive(Deserialize)]
-pub struct SearchQuery {
-    pub q: String,
+#[derive(Deserialize, Debug)]
+pub struct SearchRequestExtractor {
+    datastar: Option<String>,
+}
+
+impl SearchRequestExtractor {
+    pub fn get_search_text(&self) -> String {
+        self.datastar
+            .as_ref()
+            .and_then(|json_str| serde_json::from_str::<Value>(json_str).ok())
+            .and_then(|data| data.get("search").and_then(|v| v.as_str()).map(String::from))
+            .unwrap_or_default()
+    }
 }
 
 #[derive(Clone)]
@@ -35,7 +48,7 @@ pub struct SearchResult {
 pub async fn search(
     State(_state): State<crate::AppState>,
     headers: HeaderMap,
-    Query(params): Query<SearchQuery>,
+    Query(extractor): Query<SearchRequestExtractor>,
 ) -> Result<impl IntoResponse, AppError> {
     if headers.get("datastar-request").is_none() {
         return Err(AppError::not_found(
@@ -43,28 +56,21 @@ pub async fn search(
         ));
     }
 
-    let query = params.q.to_lowercase();
+    // Extract search text from datastar parameter
+    let query = extractor.get_search_text().to_lowercase();
+    
+    // Log the search request
+    tracing::info!(
+        search_query = %query,
+        is_empty = query.is_empty(),
+        "Search request received"
+    );
 
-    let all_examples = vec![
-        SearchResult {
-            title: "Active Search".to_string(),
-            description: "Search examples as you type".to_string(),
-        },
-        SearchResult {
-            title: "Hypermedia Demo".to_string(),
-            description: "Dynamic content loading with Datastar".to_string(),
-        },
-        SearchResult {
-            title: "Form Demo".to_string(),
-            description: "Form submission with hypermedia responses".to_string(),
-        },
-        SearchResult {
-            title: "Server-Side Theme Switcher".to_string(),
-            description: "Change themes with server-generated CSS variables".to_string(),
-        },
-    ];
+    // Get all examples from generated data
+    let all_examples = crate::examples_gen::get_examples();
 
-    let results: Vec<SearchResult> = if query.is_empty() {
+    // Filter examples based on search query and add syntax highlighting
+    let results: Vec<_> = if query.is_empty() {
         all_examples
     } else {
         all_examples
@@ -72,10 +78,45 @@ pub async fn search(
             .filter(|example| {
                 example.title.to_lowercase().contains(&query)
                     || example.description.to_lowercase().contains(&query)
+                    || example.id.to_lowercase().contains(&query)
             })
             .collect()
-    };
+    }
+    .into_iter()
+    .map(|ex| {
+        let highlighted_html = highlight_code(&ex.html, "html").unwrap_or_else(|_| ex.html.clone());
+        crate::templates::ExampleWithHighlight {
+            id: ex.id,
+            title: ex.title,
+            description: ex.description,
+            html: ex.html,
+            highlighted_html,
+            backend_file: ex.backend_file,
+        }
+    })
+    .collect();
 
-    let template = SearchResultsTemplate { results };
-    Ok(template.into_response())
+    // Log the search results
+    tracing::info!(
+        results_count = results.len(),
+        "Returning search results"
+    );
+
+    let template = ExampleSearchResultsTemplate { examples: results };
+    
+    // Render the template to HTML
+    let html = template.render().map_err(|e| AppError::InternalServerError(anyhow::anyhow!("Template error: {}", e)))?;
+    
+    // Wrap results in the example-cards div to maintain structure
+    let wrapped_html = format!(r#"<div id="example-cards">{}</div>"#, html);
+    
+    // Use datastar SDK to create proper SSE response with Inner mode
+    Ok(Sse::new(stream! {
+        let patch = PatchElements::new(wrapped_html)
+            .mode(datastar::consts::ElementPatchMode::Inner)
+            .selector("#example-cards-container");
+        
+        let sse_event = patch.write_as_axum_sse_event();
+        yield Ok::<_, Infallible>(sse_event);
+    }).into_response())
 }

@@ -6,13 +6,11 @@ examples:
       <input 
           type="text" 
           placeholder="Search examples..." 
-          data-model="search"
-          data-on-input="@get('/examples/elements/search?q=' + encodeURIComponent(search))"
+          data-bind-search
+          data-on-input__debounce.200ms="@get('/examples/search')"
           class="search-input"
       >
-      <div id="search-results" class="search-results">
-          <!-- Search results will appear here -->
-      </div>
+      <!-- Search results replace the contents of #example-cards-container -->
     backend_file: "src/examples/active_search.rs"
   - id: "theme-switcher"
     title: "Server-Side Theme Switcher"

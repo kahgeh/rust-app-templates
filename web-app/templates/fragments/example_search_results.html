@@ -1,0 +1,11 @@
+{% for example in examples %}
+{% if example.id != "active-search" %}
+{% include "fragments/example_card.html" %}
+{% endif %}
+{% endfor %}
+
+{% if examples.is_empty() %}
+<div style="grid-column: 1 / -1; text-align: center; color: var(--text-2); padding: var(--size-6);">
+    <p>No examples found matching your search.</p>
+</div>
+{% endif %}

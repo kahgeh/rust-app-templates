@@ -69,7 +69,7 @@ pub async fn examples(State(state): State<AppState>, headers: HeaderMap) -> Exam
             }
         })
         .collect();
-
+    
     ExamplesTemplate {
         title: state.settings.application.name.clone(),
         environment: state.settings.application.environment.clone(),

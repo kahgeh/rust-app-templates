@@ -1,0 +1,99 @@
+<!-- Grid cell wrapper that maintains position -->
+<div class="example-card-wrapper">
+    <div class="example-card clickable-card" 
+         data-example-id="{{ example.id }}"
+         data-class-flipping="$activeCardId === '{{ example.id }}' && !$closing"
+         data-class-closing="$activeCardId === '{{ example.id }}' && $closing"
+         data-on-click="
+           if ($activeCardId === '') {
+             {% if example.id == "active-search" %}
+             if (evt.target.tagName === 'INPUT' || evt.target.closest('input')) {
+               return;
+             }
+             {% endif %}
+             const rect = evt.currentTarget.getBoundingClientRect();
+             $activeCardRect = {
+               top: rect.top,
+               left: rect.left,
+               width: rect.width,
+               height: rect.height
+             };
+             $activeCardId = '{{ example.id }}';
+             $isFlipping = true;
+             @get('/examples/code/{{ example.id }}');
+           }
+         "
+         data-on-animationend="
+           if ($closing && $activeCardId === '{{ example.id }}') {
+             $activeCardId = '';
+             $isFlipping = false;
+             $closing = false;
+             $activeCardRect = {top: 0, left: 0, width: 0, height: 0};
+           }
+         "
+         data-style-position="$activeCardId === '{{ example.id }}' ? 'fixed' : ''"
+         data-style-top="$activeCardId === '{{ example.id }}' ? $activeCardRect.top + 'px' : ''"
+         data-style-left="$activeCardId === '{{ example.id }}' ? $activeCardRect.left + 'px' : ''"
+         data-style-transform="$activeCardId === '{{ example.id }}' ? 'none' : ''"
+         data-style-width="$activeCardId === '{{ example.id }}' ? $activeCardRect.width + 'px' : ''"
+         data-style-height="$activeCardId === '{{ example.id }}' ? $activeCardRect.height + 'px' : ''"
+         data-style-z-index="$activeCardId === '{{ example.id }}' ? '9999' : ''"
+         data-style-overflow="$activeCardId === '{{ example.id }}' ? 'visible' : ''">
+    <div class="card-flipper">
+        <div class="card-front">
+            <div class="card-header">
+                <div>
+                    <h3>{{ example.title }}</h3>
+                    <p class="example-description">{{ example.description }}</p>
+                </div>
+                {% if example.id == "active-search" %}
+                <div class="pin-icon" title="Pinned">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"/>
+                    </svg>
+                </div>
+                {% endif %}
+            </div>
+            {% if example.id == "active-search" %}
+            <div class="example-content">
+                {{ example.html | safe }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-back">
+            <!-- This will contain the modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>{{ example.title }}</h2>
+                    <button 
+                        class="close-btn"
+                        data-on-click__stop="$closing = true">
+                        ✕
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- Demo section at the top -->
+                    <div class="demo-section">
+                        <div class="example-demo">
+                            {{ example.html | safe }}
+                        </div>
+                    </div>
+                    
+                    <!-- Code blocks side by side -->
+                    <div class="code-blocks-container">
+                        <pre>
+                            <div class="code-header">Frontend Code</div>
+                            <code class="language-html">{{ example.highlighted_html|safe }}</code>
+                        </pre>
+                        <pre>
+                            <div class="code-header">Backend Code</div>
+                            <code class="language-rust" id="backend-{{ example.id }}">Loading...</code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div> <!-- End of example-card-wrapper -->

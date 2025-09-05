@@ -88,7 +88,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/health", get(health))
         .route("/examples/elements/get-items", get(handlers::get_items))
         .route("/examples/elements/submit-form", post(handlers::submit_form))
-        .route("/examples/elements/search", get(handlers::search))
+        .route("/examples/search", get(handlers::search))
         .route("/examples/theme/switch", get(handlers::switch_theme))
         .route("/examples/code/{example_id}", get(handlers::get_example_code))
         .nest_service("/static", ServeDir::new("static"))
