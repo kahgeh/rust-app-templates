@@ -77,7 +77,7 @@ pub fn get_theme_variables(theme: &Theme) -> String {
   
   /* Surface colors */
   --surface-1: var(--gray-8);
-  --surface-2: var(--gray-7);
+  --surface-2: var(--gray-9);  /* Darker background for code blocks */
   --surface-3: var(--gray-6);
   --surface-4: var(--gray-5);
   
@@ -161,21 +161,21 @@ pub fn get_syntax_highlighting_variables(theme: &Theme) -> String {
         }
         Theme::Dim => {
             r#"
-  /* Dim theme syntax highlighting */
-  --token-text: var(--gray-3);        /* plain text in code */
-  --token-keyword: var(--purple-4);
-  --token-string: var(--green-4);
-  --token-number: var(--orange-4);
-  --token-comment: var(--gray-6);
-  --token-function: var(--blue-4);
-  --token-type: var(--cyan-4);
-  --token-operator: var(--gray-3);
-  --token-punctuation: var(--gray-4);
-  --token-variable: var(--indigo-4);
-  --token-constant: var(--pink-4);
-  --token-tag: var(--red-4);
-  --token-attribute: var(--orange-4);
-  --token-namespace: var(--teal-4);
+  /* Dim theme syntax highlighting - muted but with good contrast against dark background */
+  --token-text: var(--gray-5);        /* plain text - lighter gray for contrast */
+  --token-keyword: var(--purple-5);   /* keywords - muted purple */
+  --token-string: var(--green-5);     /* strings - muted green */
+  --token-number: var(--orange-5);    /* numbers - muted orange */
+  --token-comment: var(--gray-6);     /* comments - subtle gray */
+  --token-function: var(--blue-5);    /* functions - muted blue */
+  --token-type: var(--cyan-5);        /* types - muted cyan */
+  --token-operator: var(--gray-5);    /* operators - same as text */
+  --token-punctuation: var(--gray-6); /* punctuation - subtle */
+  --token-variable: var(--indigo-5);  /* variables - muted indigo */
+  --token-constant: var(--pink-5);    /* constants - muted pink */
+  --token-tag: var(--red-5);          /* tags - muted red */
+  --token-attribute: var(--orange-5); /* attributes - muted orange */
+  --token-namespace: var(--teal-5);   /* namespaces - muted teal */
             "#
         }
         Theme::Grape => {
