@@ -3,36 +3,36 @@
 //! @html_start
 //! <div style="display: flex; flex-wrap: wrap; gap: var(--size-3); align-items: center;">
 //!     <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
-//!         <input 
-//!             type="radio" 
-//!             name="theme" 
+//!         <input
+//!             type="radio"
+//!             name="theme"
 //!             value="light"
 //!             data-on-click="$theme = 'light'; @get('/examples/theme/switch?theme=light')"
 //!             data-attr-checked="$theme === 'light'">
 //!         <span>☀️ Light</span>
 //!     </label>
 //!     <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
-//!         <input 
-//!             type="radio" 
-//!             name="theme" 
+//!         <input
+//!             type="radio"
+//!             name="theme"
+//!             value="dim"
+//!             data-on-click="$theme = 'dim'; @get('/examples/theme/switch?theme=dim')"
+//!             data-attr-checked="$theme === 'dim'">
+//!         <span> 🌚 Dim</span>
+//!     </label>
+//!     <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
+//!         <input
+//!             type="radio"
+//!             name="theme"
 //!             value="dark"
 //!             data-on-click="$theme = 'dark'; @get('/examples/theme/switch?theme=dark')"
 //!             data-attr-checked="$theme === 'dark'">
 //!         <span>🌙 Dark</span>
 //!     </label>
 //!     <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
-//!         <input 
-//!             type="radio" 
-//!             name="theme" 
-//!             value="dim"
-//!             data-on-click="$theme = 'dim'; @get('/examples/theme/switch?theme=dim')"
-//!             data-attr-checked="$theme === 'dim'">
-//!         <span>🌫️ Dim</span>
-//!     </label>
-//!     <label style="display: flex; align-items: center; gap: var(--size-2); cursor: pointer;">
-//!         <input 
-//!             type="radio" 
-//!             name="theme" 
+//!         <input
+//!             type="radio"
+//!             name="theme"
 //!             value="grape"
 //!             data-on-click="$theme = 'grape'; @get('/examples/theme/switch?theme=grape')"
 //!             data-attr-checked="$theme === 'grape'">
@@ -86,8 +86,7 @@ pub async fn switch_theme(
             {}
         }}
     </style>"#,
-        theme_css,
-        syntax_css
+        theme_css, syntax_css
     );
 
     let mut response = Html(html).into_response();
@@ -102,3 +101,4 @@ pub async fn switch_theme(
 
     Ok(response)
 }
+
