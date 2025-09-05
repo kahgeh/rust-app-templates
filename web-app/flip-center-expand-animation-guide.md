@@ -205,8 +205,9 @@ Complete the transformation by expanding cards to full viewport size, creating a
 ### Key Changes
 
 #### Modal Size in Animation (examples.html:381-382, 389-390)
+renames: slide-to-center -> expand-to-viewport and slide-from-center -> contract-from-viewport 
 ```css
-@keyframes slide-to-center {
+@keyframes expand-to-viewport{
     to {
         /* ... existing position properties ... */
         width: 100vw;   /* Changed from 90vw */
@@ -214,7 +215,7 @@ Complete the transformation by expanding cards to full viewport size, creating a
     }
 }
 
-@keyframes slide-from-center {
+@keyframes contract-from-viewport {
     from {
         /* ... existing position properties ... */
         width: 100vw;   /* Ensures smooth reverse */
