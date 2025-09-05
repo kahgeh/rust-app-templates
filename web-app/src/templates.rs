@@ -9,7 +9,6 @@ pub struct IndexTemplate {
     pub title: String,
     pub environment: String,
     pub theme_css: String,
-    pub syntax_css: String,
 }
 
 #[derive(Template)]
@@ -26,6 +25,16 @@ pub struct FormResponseTemplate {
     pub message: String,
 }
 
+#[derive(Clone)]
+pub struct ExampleWithHighlight {
+    pub id: String,
+    pub title: String,
+    pub description: String,
+    pub html: String,
+    pub highlighted_html: String,
+    pub backend_file: String,
+}
+
 #[derive(Template)]
 #[template(path = "examples.html")]
 pub struct ExamplesTemplate {
@@ -33,7 +42,7 @@ pub struct ExamplesTemplate {
     pub environment: String,
     pub theme_css: String,
     pub syntax_css: String,
-    pub examples: Vec<crate::examples_gen::ExampleData>,
+    pub examples: Vec<ExampleWithHighlight>,
 }
 
 #[derive(Template)]

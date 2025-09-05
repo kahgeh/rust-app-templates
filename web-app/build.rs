@@ -26,7 +26,14 @@ fn extract_metadata(file_content: &str, file_path: &str) -> Option<Example> {
         } else if line.starts_with("//! @html_end") {
             in_html = false;
         } else if in_html && line.starts_with("//!") {
-            html_lines.push(line.trim_start_matches("//!").trim());
+            let content = line.strip_prefix("//!").unwrap_or("");
+            // Only remove a single leading space if it exists (for the comment formatting)
+            let content = if content.starts_with(' ') {
+                &content[1..]
+            } else {
+                content
+            };
+            html_lines.push(content);
         }
     }
     

@@ -1,6 +1,6 @@
 use crate::{
     syntax_highlight::highlight_code,
-    templates::{BackendCodeTemplate, ExamplesTemplate, IndexTemplate},
+    templates::{BackendCodeTemplate, ExamplesTemplate, ExampleWithHighlight, IndexTemplate},
     theme::{get_syntax_highlighting_variables, get_theme_variables, Theme},
     AppState,
 };
@@ -38,13 +38,11 @@ pub async fn index(State(state): State<AppState>, headers: HeaderMap) -> IndexTe
     // Extract theme from request (will be in signals once we handle them)
     let theme = extract_theme_from_headers(&headers);
     let theme_css = get_theme_variables(&theme);
-    let syntax_css = get_syntax_highlighting_variables(&theme);
 
     IndexTemplate {
         title: state.settings.application.name.clone(),
         environment: state.settings.application.environment.clone(),
         theme_css,
-        syntax_css,
     }
 }
 
@@ -56,15 +54,21 @@ pub async fn examples(State(state): State<AppState>, headers: HeaderMap) -> Exam
     let syntax_css = get_syntax_highlighting_variables(&theme);
     
     // Get generated examples data and add syntax highlighting
-    let mut examples = crate::examples_gen::get_examples();
-    for example in &mut examples {
-        // Apply syntax highlighting to HTML code
-        if let Ok(highlighted) = highlight_code(&example.html, "html") {
-            example.highlighted_html = highlighted;
-        } else {
-            example.highlighted_html = example.html.clone();
-        }
-    }
+    let raw_examples = crate::examples_gen::get_examples();
+    let examples: Vec<ExampleWithHighlight> = raw_examples
+        .into_iter()
+        .map(|ex| {
+            let highlighted_html = highlight_code(&ex.html, "html").unwrap_or_else(|_| ex.html.clone());
+            ExampleWithHighlight {
+                id: ex.id,
+                title: ex.title,
+                description: ex.description,
+                html: ex.html,
+                highlighted_html,
+                backend_file: ex.backend_file,
+            }
+        })
+        .collect();
 
     ExamplesTemplate {
         title: state.settings.application.name.clone(),
