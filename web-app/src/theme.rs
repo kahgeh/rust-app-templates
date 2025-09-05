@@ -49,7 +49,7 @@ pub fn get_theme_variables(theme: &Theme) -> String {
   --surface-0: conic-gradient(from 90deg at 50% 0%, #2a2a2a, 50%, #3a3a3a, #2a2a2a); 
   
   /* Text colors */
-  --text-1: var(--gray-1);
+  --text-1: var(--gray-3);
   --text-2: var(--gray-5);
   
   /* Surface colors */
@@ -72,14 +72,14 @@ pub fn get_theme_variables(theme: &Theme) -> String {
   --surface-0: var(--gradient-6);  /* Subtle dim gradient */
   
   /* Text colors */
-  --text-1: var(--gray-3);
-  --text-2: var(--gray-4);
+  --text-1: var(--gray-4);
+  --text-2: var(--gray-3);
   
   /* Surface colors */
-  --surface-1: var(--gray-8);
-  --surface-2: var(--gray-7);  /* Maintains descending pattern: 8, 7, 6, 5 */
-  --surface-3: var(--gray-6);
-  --surface-4: var(--gray-5);
+  --surface-1: var(--gray-9);
+  --surface-2: var(--gray-8);  /* Maintains descending pattern: 8, 7, 6, 5 */
+  --surface-3: var(--gray-7);
+  --surface-4: var(--gray-6);
   
   /* Shadows */
   --surface-shadow: var(--slate-12-hsl);
@@ -124,26 +124,26 @@ pub fn get_syntax_highlighting_variables(theme: &Theme) -> String {
         Theme::Light => {
             r#"
   /* Light theme syntax highlighting - GitHub Light theme for WCAG AA compliance */
-  --token-text: var(--gray-12);       /* #24292f - plain text in code */
-  --token-keyword: var(--red-6);      /* #cf222e - keywords */
-  --token-string: var(--blue-9);      /* #0a3069 - strings */
-  --token-number: var(--orange-7);    /* #953800 - numbers */
-  --token-comment: var(--gray-7);     /* #57606a - comments */
-  --token-function: var(--purple-7);  /* #8250df - functions */
-  --token-type: var(--orange-7);      /* #953800 - types */
-  --token-operator: var(--gray-12);   /* #24292f - operators */
-  --token-punctuation: var(--gray-7); /* #57606a - punctuation */
-  --token-variable: var(--gray-12);   /* #24292f - variables */
-  --token-constant: var(--blue-7);    /* #0550ae - constants */
-  --token-tag: var(--red-6);          /* #cf222e - HTML/JSX tags */
-  --token-attribute: var(--blue-7);   /* #0550ae - attributes */
-  --token-namespace: var(--purple-7); /* #8250df - namespaces */
+  --token-text: var(--gray-12);       
+  --token-keyword: var(--red-6);      
+  --token-string: var(--blue-9);      
+  --token-number: var(--orange-7);    
+  --token-comment: var(--gray-7);     
+  --token-function: var(--purple-7);  
+  --token-type: var(--orange-7);      
+  --token-operator: var(--gray-12);   
+  --token-punctuation: var(--gray-7); 
+  --token-variable: var(--gray-12);  
+  --token-constant: var(--blue-7);  
+  --token-tag: var(--red-6);        
+  --token-attribute: var(--blue-7); 
+  --token-namespace: var(--purple-7);
             "#
         }
         Theme::Dark => {
             r#"
   /* Dark theme syntax highlighting */
-  --token-text: var(--gray-1);        /* plain text in code */
+  --token-text: var(--gray-1);      
   --token-keyword: var(--pink-3);
   --token-string: var(--green-3);
   --token-number: var(--orange-3);
@@ -161,27 +161,27 @@ pub fn get_syntax_highlighting_variables(theme: &Theme) -> String {
         }
         Theme::Dim => {
             r#"
-  /* Dim theme syntax highlighting - balanced contrast for gray-7 background */
-  --token-text: var(--gray-5);        /* plain text - lighter gray for contrast */
-  --token-keyword: var(--purple-5);   /* keywords - muted purple */
-  --token-string: var(--green-5);     /* strings - muted green */
-  --token-number: var(--orange-5);    /* numbers - muted orange */
-  --token-comment: var(--gray-6);     /* comments - subtle gray */
-  --token-function: var(--blue-5);    /* functions - muted blue */
-  --token-type: var(--cyan-5);        /* types - muted cyan */
-  --token-operator: var(--gray-5);    /* operators - same as text */
-  --token-punctuation: var(--gray-6); /* punctuation - subtle */
-  --token-variable: var(--indigo-5);  /* variables - muted indigo */
-  --token-constant: var(--pink-5);    /* constants - muted pink */
-  --token-tag: var(--red-5);          /* tags - muted red */
-  --token-attribute: var(--orange-5); /* attributes - muted orange */
-  --token-namespace: var(--teal-5);   /* namespaces - muted teal */
+  /* Dim theme syntax highlighting - desaturated colors with good contrast */
+  --token-text: var(--gray-4);        
+  --token-keyword: var(--orange-6);    
+  --token-string: var(--brown-4);      
+  --token-number: var(--amber-5);     
+  --token-comment: var(--gray-6);     
+  --token-function: var(--sky-5);     
+  --token-type: var(--teal-5);        
+  --token-operator: var(--gray-4);    
+  --token-punctuation: var(--gray-5); 
+  --token-variable: var(--purple-4);  
+  --token-constant: var(--rose-5);    
+  --token-tag: var(--coral-5);        
+  --token-attribute: var(--amber-5);  
+  --token-namespace: var(--jade-5);   
             "#
         }
         Theme::Grape => {
             r#"
   /* Grape theme syntax highlighting */
-  --token-text: var(--purple-1);      /* plain text in code */
+  --token-text: var(--purple-1);   
   --token-keyword: var(--purple-3);
   --token-string: var(--green-3);
   --token-number: var(--orange-3);
