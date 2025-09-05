@@ -361,13 +361,13 @@
 
 /* Animation to move card to center while maintaining flip */
 .example-card.flipping {
-    animation: slide-to-center 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+    animation: expand-to-viewport 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
     z-index: 9999 !important;
 }
 
 /* Animation for closing - reverses the center animation */
 .example-card.closing {
-    animation: slide-from-center 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+    animation: contract-from-viewport 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
     z-index: 9999 !important;
 }
 
@@ -376,7 +376,7 @@
     transform: rotateY(0deg);
 }
 
-@keyframes slide-to-center {
+@keyframes expand-to-viewport {
     to {
         top: 50%;
         left: 50%;
@@ -386,7 +386,7 @@
     }
 }
 
-@keyframes slide-from-center {
+@keyframes contract-from-viewport {
     from {
         top: 50%;
         left: 50%;
